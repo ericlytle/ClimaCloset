@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ClimaCloset</string>
+    <string name="title_activity_catalog_top">CatalogTopActivity</string>
+    <string name="title_activity_catalog_bottom">catalogBottomActivity</string>
 </resources>

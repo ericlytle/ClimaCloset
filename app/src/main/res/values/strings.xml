@@ -1,5 +1,23 @@
 <resources>
     <string name="app_name">ClimaCloset</string>
-    <string name="title_activity_catalog_top">CatalogTopActivity</string>
-    <string name="title_activity_catalog_bottom">catalogBottomActivity</string>
+    <string name="title_activity_catalog_top">Catalog Clothing Top</string>
+    <string name="title_activity_catalog_bottom">Catalog Clothing Bottom</string>
+    <string name="submit_button">Submit</string>
+    <string name="take_photo_button">Take Photo</string>
+    <string name="minimum_temperature_edittext_hint">Minimum Temperature</string>
+    <string name="maximum_temperature_edittext_hint">Maximum Temperature</string>
+    <string-array name="sleeve_array">
+        <item>Short Sleeve</item>
+        <item>3/4 Sleeve</item>
+        <item>Long Sleeve</item>
+    </string-array>
+    <string-array name="color_array">
+        <item>Red</item>
+        <item>Orange</item>
+        <item>Yellow</item>
+        <item>Green</item>
+        <item>Blue</item>
+        <item>Indigo</item>
+        <item>Violet</item>
+    </string-array>
 </resources>

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,4 +16,88 @@
     tools:context="umkc.elmp7.climacloset.ClimaClothesActivites.CatalogTopActivity"
     tools:showIn="@layout/activity_catalog_top">
 
+    <Spinner
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/colorTextField"
+        android:gravity="center"
+        android:layout_below="@+id/topTypeTextField"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/topTypeTextField"
+        android:hint="Top Type"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/colorTextField"
+        android:layout_marginTop="44dp" />
+
+    <Spinner
+        android:layout_width="200dp"
+        android:layout_height="68dp"
+        android:id="@+id/sleeveTypeSpinner"
+        android:gravity="center"
+        android:layout_below="@+id/colorTextField"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/mintemp"
+        android:hint="Min Temp"
+        android:gravity="center"
+        android:layout_below="@+id/sleeveTypeSpinner"
+        android:layout_alignStart="@+id/photo" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/maxtemp"
+        android:hint="Max Temp"
+        android:gravity="center"
+        android:layout_below="@+id/mintemp"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Take Photo"
+        android:id="@+id/photo"
+        android:gravity="center"
+        android:layout_below="@+id/maxtemp"
+        android:layout_alignStart="@+id/maxtemp" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/photoPreview"
+        android:gravity="center"
+        android:layout_below="@+id/photo"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/submit"
+        android:layout_below="@+id/photoPreview"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/button"
+        android:layout_below="@+id/submit"
+        android:layout_centerHorizontal="true" />
+
+
 </RelativeLayout>
+</ScrollView>

@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(catalogBottomIntent);
             }
         });
+
     }
 
     private class FetchWeatherTask extends AsyncTask<String, Void, String> {

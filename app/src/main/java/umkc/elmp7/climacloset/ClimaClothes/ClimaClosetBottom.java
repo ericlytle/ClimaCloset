@@ -1,13 +1,15 @@
 package umkc.elmp7.climacloset.ClimaClothes;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by ericl on 2/15/2016.
  */
 public class ClimaClosetBottom implements ClothingItem{
-    private byte[] bottomPicture;
+    private Bitmap bottomPicture;
 
     @Override
-    public byte[] getPicture(){
+    public Bitmap getPicture(){
         return bottomPicture;
     }
 
@@ -26,12 +28,12 @@ public class ClimaClosetBottom implements ClothingItem{
     }
 
     @Override
-    public String getMinTemp(){
-        return "";
+    public double getMinTemp(){
+        return 0.0;
     }
 
     @Override
-    public String getMaxTemp(){
-        return "";
+    public double getMaxTemp(){
+        return 0.0;
     }
 }

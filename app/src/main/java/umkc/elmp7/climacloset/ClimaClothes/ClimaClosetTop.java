@@ -1,41 +1,62 @@
 package umkc.elmp7.climacloset.ClimaClothes;
 
+import android.graphics.Bitmap;
+
+
 /**
  * Created by ericl on 2/15/2016.
  */
 public class ClimaClosetTop implements ClothingItem{
     //implement later
-    private byte[] topPicture;
+    private Bitmap topPicture;
+    private String availability;
+    private String color;
+    private String topType;
+    private double minTemp;
+    private double maxTemp;
+    private String sleeveType;
+
+    public ClimaClosetTop(Bitmap picture, String availability, String color, String topType, double minTemp, double maxTemp, String sleeveType){
+        this.topPicture = picture;
+        this.availability = availability;
+        this.color = color;
+        this.topType = topType;
+        this.minTemp = minTemp;
+        this.maxTemp = maxTemp;
+        this.sleeveType = sleeveType;
+    }
+
+    //get Methods
     public String getSleeveType(){
-        return "";
+        return sleeveType;
     }
 
     @Override
-    public byte[] getPicture(){
+    public Bitmap getPicture(){
         return topPicture;
     }
 
     @Override
     public String getAvailability(){
-        return "";
+        return availability;
     }
 
     @Override
     public String getColor(){
-        return "";
+        return color;
     }
 
     public String getTopType(){
-        return "";
+        return topType;
     }
 
     @Override
-    public String getMinTemp(){
-        return "";
+    public double getMinTemp(){
+        return minTemp;
     }
 
     @Override
-    public String getMaxTemp(){
-        return "";
+    public double getMaxTemp(){
+        return maxTemp;
     }
 }

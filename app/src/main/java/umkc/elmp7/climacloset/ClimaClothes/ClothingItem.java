@@ -1,16 +1,18 @@
 package umkc.elmp7.climacloset.ClimaClothes;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by ericl on 2/15/2016.
  */
 public interface ClothingItem {
-    public byte[] getPicture();
+    public Bitmap getPicture();
 
     public String getAvailability();
 
     public String getColor();
 
-    public String getMinTemp();
+    public double getMinTemp();
 
-    public String getMaxTemp();
+    public double getMaxTemp();
 }

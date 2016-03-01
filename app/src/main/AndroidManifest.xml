@@ -26,12 +26,16 @@
             android:label="@string/title_activity_catalog_bottom"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <uses-feature android:name="android.hardware.camera"></uses-feature>
-        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <uses-feature android:name="android.hardware.camera" />
+        <!--
+             ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".ClimaClothesActivites.BrowseTopsActivity"></activity>
     </application>
 
 </manifest>

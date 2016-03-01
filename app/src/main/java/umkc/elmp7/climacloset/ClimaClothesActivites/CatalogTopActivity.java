@@ -21,11 +21,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.List;
-
 import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetTop;
 import umkc.elmp7.climacloset.ClimaDB.ClimaClosetDB;
 import umkc.elmp7.climacloset.R;
+import umkc.elmp7.climacloset.ClimaUtil.*;
 
 public class CatalogTopActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 1888;
@@ -34,6 +33,7 @@ public class CatalogTopActivity extends AppCompatActivity {
     private Button photoButton, populate;
     private ImageView photoPreview;
     private Bitmap photo;
+    private ClimaUtilities utility;
     private ClimaClosetDB DB;
     private static ArrayAdapter<String> spinnerAdapter;
 
@@ -83,8 +83,13 @@ public class CatalogTopActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    boolean success = DB.addTop(new ClimaClosetTop(photo, "Avail", colorET.getSelectedItem().toString(), topTypeET.getText().toString(),
-                            Double.parseDouble(minTempET.getText().toString()), Double.parseDouble(maxTempET.getText().toString()), sleeveTypeET.getSelectedItem().toString()));
+                    boolean success = DB.addTop(new ClimaClosetTop(photo,
+                            "Avail",
+                            colorET.getSelectedItem().toString(),
+                            topTypeET.getText().toString(),
+                            Double.parseDouble(minTempET.getText().toString()),
+                            Double.parseDouble(maxTempET.getText().toString()),
+                            sleeveTypeET.getSelectedItem().toString()));
                     if (success) {
                         Snackbar.make(findViewById(android.R.id.content), "Top Catalogged Successfully", Snackbar.LENGTH_LONG)
                                 .show();
@@ -114,10 +119,10 @@ public class CatalogTopActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Cursor cursor = DB.ClimaQueryTop();
+                Cursor cursor = DB.ClimaQueryTop(0.0);
                 cursor.moveToFirst();
                 topTypeET.setText(cursor.getString(cursor.getColumnIndex("top_type")));
-                photoPreview.setImageBitmap(DB.getImage(cursor.getBlob(cursor.getColumnIndex("picture"))));
+                photoPreview.setImageBitmap(utility.getCursorImage(cursor, DB.SHIRTS_KEY_PICTURE));
                 photoPreview.setEnabled(true);
 
             }

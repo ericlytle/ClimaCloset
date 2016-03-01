@@ -73,13 +73,13 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
         }
         return true;
     }
-    public Cursor ClimaQueryTop(){
+    public Cursor ClimaQueryTop(double currentTemp){
         SQLiteDatabase SQLDB = this.getWritableDatabase();
         String[] from = { SHIRTS_KEY_ID,
                 SHIRTS_KEY_TOP_TYPE };
         Cursor cursor = SQLDB.query(SHIRTS_TABLE,
                 null,
-                SHIRTS_KEY_TOP_TYPE + "= '" + "test" + "'",
+                null,//where
                 null,
                 null,
                 null,

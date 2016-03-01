@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         catalogbottomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent catalogBottomIntent = new Intent(getApplicationContext(), CatalogBottomActivity.class);
+                Intent catalogBottomIntent = new Intent(getApplicationContext(), BrowseTopsActivity.class);
                 startActivity(catalogBottomIntent);
             }
         });

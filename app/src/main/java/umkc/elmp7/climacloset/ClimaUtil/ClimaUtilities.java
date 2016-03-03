@@ -1,5 +1,6 @@
 package umkc.elmp7.climacloset.ClimaUtil;
 
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +11,7 @@ import java.io.ByteArrayOutputStream;
  * Created by ericl on 2/29/2016.
  */
 public class ClimaUtilities {
+    private static Resources resources;
     public static byte[] getBytes(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
@@ -31,5 +33,13 @@ public class ClimaUtilities {
 
     public static double getCursorDouble(Cursor tCursor, String columnIdx){
         return tCursor.getDouble(tCursor.getColumnIndex(columnIdx));
+    }
+
+    public static long getCursorLong(Cursor tCursor, String columnIdx){
+        return tCursor.getLong(tCursor.getColumnIndex(columnIdx));
+    }
+
+    public static String getResourceString(int ID){
+        return resources.getString(ID);
     }
 }

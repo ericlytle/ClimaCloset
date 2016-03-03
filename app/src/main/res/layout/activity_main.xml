@@ -19,6 +19,21 @@
         android:id="@+id/catalogBottomButton"
         android:layout_below="@+id/catalogTopButton"
         android:layout_centerHorizontal="true" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Browse Tops"
+        android:id="@+id/browseTopsButton"
+        android:layout_below="@+id/catalogBottomButton"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Browse Bottoms"
+        android:id="@+id/browseBottomsButton"
+        android:layout_below="@+id/browseTopsButton"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,12 +42,6 @@
         android:text=""
         android:id="@+id/temp"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/cityState"
-        android:layout_below="@+id/catalogBottomButton"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/browseBottomsButton"/>
 </RelativeLayout>

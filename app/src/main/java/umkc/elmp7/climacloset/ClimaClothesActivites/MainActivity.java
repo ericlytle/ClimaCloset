@@ -25,10 +25,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button catalogTopButton = (Button) findViewById(R.id.catalogTopButton);
         Button catalogbottomButton = (Button) findViewById(R.id.catalogBottomButton);
-        EditText cityStateName = (EditText) findViewById(R.id.cityState);
-        cityStateName.setText(DEFAULTCITYNAME);
+        Button browseTopsButton = (Button) findViewById(R.id.browseTopsButton);
+        Button browseBottomButton = (Button) findViewById(R.id.browseBottomsButton);
+        //EditText cityStateName = (EditText) findViewById(R.id.cityState);
+        //cityStateName.setText(DEFAULTCITYNAME);
 
-        new FetchWeatherTask().execute(cityStateName.getText().toString());
+        new FetchWeatherTask().execute(DEFAULTCITYNAME);
 
         catalogTopButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,8 +43,24 @@ public class MainActivity extends AppCompatActivity {
         catalogbottomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent catalogBottomIntent = new Intent(getApplicationContext(), BrowseTopsActivity.class);
+                Intent catalogBottomIntent = new Intent(getApplicationContext(), CatalogBottomActivity.class);
                 startActivity(catalogBottomIntent);
+            }
+        });
+
+        browseTopsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browseTopsActivity = new Intent(getApplicationContext(), BrowseTopsActivity.class);
+                startActivity(browseTopsActivity);
+            }
+        });
+
+        browseBottomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browseBottomActivity = new Intent(getApplicationContext(), BrowseBottomsActivity.class);
+                startActivity(browseBottomActivity);
             }
         });
 

@@ -4,8 +4,15 @@
     <string name="title_activity_catalog_bottom">Catalog Clothing Bottom</string>
     <string name="submit_button">Submit</string>
     <string name="take_photo_button">Take Photo</string>
+    <string name="retake_photo_button">Retake Photo</string>
     <string name="minimum_temperature_edittext_hint">Minimum Temperature</string>
     <string name="maximum_temperature_edittext_hint">Maximum Temperature</string>
+    <string name="SNACKBAR_id_display">Clothing Item ID:</string>
+    <string name="DB_AVAIL">Avail</string>
+    <string name="Bottom_catalog_success">Bottom Catalogged Successfully!</string>
+    <string name="Bottom_catalog_failure">Bottom Catalog Failed!</string>
+    <string name="Top_catalog_success">Top Catalogged Successfully!</string>
+    <string name="Top_catalog_failure">Top Catalog Failed!</string>
     <string-array name="sleeve_array">
         <item>Short Sleeve</item>
         <item>3/4 Sleeve</item>
@@ -20,4 +27,16 @@
         <item>Indigo</item>
         <item>Violet</item>
     </string-array>
+    <string name="BROWSE_TOPS_topTypeDisplay">Top Type: </string>
+    <string name="BROWSE_TOPS_sleeveTypeDisplay">Sleeve Type: </string>
+    <string name="BROWSE_TOPS_colorDisplay">Color: </string>
+    <string name="BROWSE_TOPS_minTempDisplay">Min Temp: </string>
+    <string name="BROWSE_TOPS_maxTempDisplay">Max Temp: </string>
+    <string name="BROWSE_BOTTOMS_bottomTypeDisplay">Bottom Type: </string>
+    <string name="BROWSE_BOTTOMS_colorDisplay">Color: </string>
+    <string name="BROWSE_BOTTOMS_minTempDisplay">Min Temp: </string>
+    <string name="BROWSE_BOTTOMS_maxTempDisplay">Max Temp: </string>
+    <string name="CATALOG_BOTTOMS_bottomTypeDisplay">Bottom Type </string>
+    <string name="CATALOG_BOTTOMS_minTempDisplay">Min Temp </string>
+    <string name="CATALOG_BOTTOMS_maxTempDisplay">Max Temp </string>
 </resources>

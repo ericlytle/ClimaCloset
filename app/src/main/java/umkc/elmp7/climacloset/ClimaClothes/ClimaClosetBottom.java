@@ -7,6 +7,31 @@ import android.graphics.Bitmap;
  */
 public class ClimaClosetBottom implements ClothingItem{
     private Bitmap bottomPicture;
+    private String availability;
+    private String color;
+    private String bottomType;
+    private double minTemp;
+    private double maxTemp;
+    private long ID;
+
+    public ClimaClosetBottom(Bitmap picture, String availability, String color, String bottomType, double minTemp, double maxTemp){
+        this.bottomPicture = picture;
+        this.availability = availability;
+        this.color = color;
+        this.bottomType = bottomType;
+        this.minTemp = minTemp;
+        this.maxTemp = maxTemp;
+    }
+
+    public ClimaClosetBottom(Bitmap picture, String availability, String color, String bottomType, double minTemp, double maxTemp, long ID){
+        this.bottomPicture = picture;
+        this.availability = availability;
+        this.color = color;
+        this.bottomType = bottomType;
+        this.minTemp = minTemp;
+        this.maxTemp = maxTemp;
+        this.ID = ID;
+    }
 
     @Override
     public Bitmap getPicture(){
@@ -15,25 +40,27 @@ public class ClimaClosetBottom implements ClothingItem{
 
     @Override
     public String getAvailability(){
-        return "";
+        return availability;
     }
 
     @Override
     public String getColor(){
-        return "";
+        return color;
     }
 
     public String getBottomType(){
-        return "";
+        return bottomType;
     }
 
     @Override
     public double getMinTemp(){
-        return 0.0;
+        return minTemp;
     }
 
     @Override
     public double getMaxTemp(){
-        return 0.0;
+        return maxTemp;
     }
+
+    public long getID(){return ID;}
 }

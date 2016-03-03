@@ -15,8 +15,19 @@ public class ClimaClosetTop implements ClothingItem{
     private double minTemp;
     private double maxTemp;
     private String sleeveType;
+    private long ID;
 
     public ClimaClosetTop(Bitmap picture, String availability, String color, String topType, double minTemp, double maxTemp, String sleeveType){
+        this.topPicture = picture;
+        this.availability = availability;
+        this.color = color;
+        this.topType = topType;
+        this.minTemp = minTemp;
+        this.maxTemp = maxTemp;
+        this.sleeveType = sleeveType;
+    }
+    public ClimaClosetTop(Bitmap picture, String availability, String color, String topType, double minTemp, double maxTemp, String sleeveType, long ID){
+        this.ID = ID;
         this.topPicture = picture;
         this.availability = availability;
         this.color = color;
@@ -59,4 +70,6 @@ public class ClimaClosetTop implements ClothingItem{
     public double getMaxTemp(){
         return maxTemp;
     }
+
+    public long getID(){return ID;}
 }

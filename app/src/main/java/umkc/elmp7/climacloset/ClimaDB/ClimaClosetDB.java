@@ -86,14 +86,28 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
                 null);
         return cursor;
     }
+
+    public Cursor ClimaQueryBottom(double currentTemp){
+        SQLiteDatabase SQLDB = this.getWritableDatabase();
+        String[] from = { SHIRTS_KEY_ID,
+                SHIRTS_KEY_TOP_TYPE };
+        Cursor cursor = SQLDB.query(BOTTOMS_TABLE,
+                null,
+                null,//where
+                null,
+                null,
+                null,
+                null);
+        return cursor;
+    }
     public boolean addBottom(ClimaClosetBottom newBottom) throws SQLException{
         SQLiteDatabase SQLDB = this.getWritableDatabase();
         long rowID;
 
         ContentValues bottomValues = new ContentValues();
         bottomValues.put(BOTTOMS_KEY_TYPE, newBottom.getBottomType());
-        //bottomValues.put(BOTTOMS_KEY_AVAILABILITY, newBottom.getPicture());
-        bottomValues.put(BOTTOMS_KEY_PICTURE, newBottom.getAvailability());
+        bottomValues.put(BOTTOMS_KEY_PICTURE, getBytes(newBottom.getPicture()));
+        bottomValues.put(BOTTOMS_KEY_AVAILABILITY, newBottom.getAvailability());
         bottomValues.put(BOTTOMS_KEY_COLOR, newBottom.getColor());
         bottomValues.put(BOTTOMS_KEY_MIN_TEMP, newBottom.getMinTemp());
         bottomValues.put(BOTTOMS_KEY_MAX_TEMP, newBottom.getMaxTemp());

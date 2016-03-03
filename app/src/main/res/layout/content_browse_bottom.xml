@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="?attr/actionBarSize">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:padding="5dp"
+        >
+
+        <HorizontalScrollView android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            >
+            <LinearLayout android:id="@+id/browseBottomLayout" android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:padding="5dp"
+                android:layout_weight="1">
+            </LinearLayout>
+        </HorizontalScrollView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/BROWSE_BOTTOMS_bottomTypeDisplay"
+            android:id="@+id/bottomTypeTextView"
+            android:layout_gravity="center_horizontal" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/BROWSE_BOTTOMS_colorDisplay"
+            android:id="@+id/colorBottomTextView"
+            android:layout_gravity="center_horizontal" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/BROWSE_BOTTOMS_minTempDisplay"
+            android:id="@+id/minTempBottomTextView"
+            android:layout_gravity="center_horizontal" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/BROWSE_BOTTOMS_maxTempDisplay"
+            android:id="@+id/maxTempBottomTextView"
+            android:layout_gravity="center_horizontal" />
+
+
+    </LinearLayout>
+</ScrollView>

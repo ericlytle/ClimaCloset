@@ -33,7 +33,6 @@ public class CatalogTopActivity extends AppCompatActivity {
     private Button photoButton, populate;
     private ImageView photoPreview;
     private Bitmap photo;
-    private ClimaUtilities utility;
     private ClimaClosetDB DB;
     private static ArrayAdapter<String> spinnerAdapter;
 
@@ -48,6 +47,7 @@ public class CatalogTopActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.climacloset);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,18 +59,17 @@ public class CatalogTopActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         //Get various elements
-        this.photoPreview = (ImageView) this.findViewById(R.id.photoPreview);
-        this.photoPreview.setEnabled(false);
-        this.photoButton = (Button) this.findViewById(R.id.photo);
-        this.colorET = (Spinner) this.findViewById(R.id.colorTextField);
+        this.photoPreview = (ImageView) this.findViewById(R.id.photoPreviewTop);
+        this.photoButton = (Button) this.findViewById(R.id.photoTopButton);
+        this.colorET = (Spinner) this.findViewById(R.id.colorTopTextField);
         this.sleeveTypeET = (Spinner) this.findViewById(R.id.sleeveTypeSpinner);
         this.topTypeET = (EditText) this.findViewById(R.id.topTypeTextField);
-        this.minTempET = (EditText) this.findViewById(R.id.mintemp);
-        this.maxTempET = (EditText) this.findViewById(R.id.maxtemp);
+        this.minTempET = (EditText) this.findViewById(R.id.mintempTop);
+        this.maxTempET = (EditText) this.findViewById(R.id.maxtempTop);
         this.populate = (Button) this.findViewById(R.id.button);
 
         //to be removed
-        Button submitButton = (Button) this.findViewById(R.id.submit);
+        Button submitButton = (Button) this.findViewById(R.id.submitTop);
 
         //Initialize database
         DB = new ClimaClosetDB(getApplicationContext());
@@ -84,19 +83,19 @@ public class CatalogTopActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     boolean success = DB.addTop(new ClimaClosetTop(photo,
-                            "Avail",
+                            getResources().getString(R.string.DB_AVAIL),
                             colorET.getSelectedItem().toString(),
                             topTypeET.getText().toString(),
                             Double.parseDouble(minTempET.getText().toString()),
                             Double.parseDouble(maxTempET.getText().toString()),
                             sleeveTypeET.getSelectedItem().toString()));
                     if (success) {
-                        Snackbar.make(findViewById(android.R.id.content), "Top Catalogged Successfully", Snackbar.LENGTH_LONG)
+                        Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.Top_catalog_success), Snackbar.LENGTH_LONG)
                                 .show();
                         clearFields();
                     }
                     else{
-                        Snackbar.make(findViewById(android.R.id.content), "Oops, Something went wrong", Snackbar.LENGTH_LONG)
+                        Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.Top_catalog_failure), Snackbar.LENGTH_LONG)
                                 .show();
                     }
                 } catch (Exception e) {
@@ -121,8 +120,8 @@ public class CatalogTopActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Cursor cursor = DB.ClimaQueryTop(0.0);
                 cursor.moveToFirst();
-                topTypeET.setText(cursor.getString(cursor.getColumnIndex("top_type")));
-                photoPreview.setImageBitmap(utility.getCursorImage(cursor, DB.SHIRTS_KEY_PICTURE));
+                topTypeET.setText(cursor.getString(cursor.getColumnIndex(DB.SHIRTS_KEY_TOP_TYPE)));
+                photoPreview.setImageBitmap(ClimaUtilities.getCursorImage(cursor, DB.SHIRTS_KEY_PICTURE));
                 photoPreview.setEnabled(true);
 
             }

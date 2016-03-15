@@ -14,12 +14,14 @@ import java.sql.SQLException;
 
 import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetBottom;
 import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetTop;
+import umkc.elmp7.climacloset.ClimaClothes.ClothingItem;
 
 /**
  * Created by ericl on 2/15/2016.
  */
 public class ClimaClosetDB extends SQLiteOpenHelper {
     //private Context dbContext;
+    private static final String IDTEXT = "id";
     private static String DATABASE_NAME = "ClimaClosetDB.sqlite";
 
 
@@ -48,6 +50,12 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase SQLDB, int previousVersion, int newVersion){
         SQLDB.execSQL("DROP TABLE IF EXISTS " + SHIRTS_TABLE);
         onCreate(SQLDB);
+    }
+
+    public boolean deleteItem(ClothingItem item, String table) {
+        SQLiteDatabase SQLDB = this.getWritableDatabase();
+
+        return SQLDB.delete(table, IDTEXT + "=" + item.getID(), null) > 0;
     }
 
     public boolean addTop(ClimaClosetTop newTop) throws SQLException{

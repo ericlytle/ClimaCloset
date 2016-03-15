@@ -2,6 +2,8 @@
     <string name="app_name">ClimaCloset</string>
     <string name="title_activity_catalog_top">Catalog Clothing Top</string>
     <string name="title_activity_catalog_bottom">Catalog Clothing Bottom</string>
+    <string name="title_activity_browse_bottom">Browse Clothing Bottom</string>
+    <string name="title_activity_browse_top">Browse Clothing Top</string>
     <string name="submit_button">Submit</string>
     <string name="take_photo_button">Take Photo</string>
     <string name="retake_photo_button">Retake Photo</string>

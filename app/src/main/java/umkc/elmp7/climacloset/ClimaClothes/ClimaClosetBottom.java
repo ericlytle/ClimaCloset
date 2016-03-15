@@ -62,5 +62,6 @@ public class ClimaClosetBottom implements ClothingItem{
         return maxTemp;
     }
 
+    @Override
     public long getID(){return ID;}
 }

@@ -21,36 +21,49 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/BROWSE_TOPS_topTypeDisplay"
+
             android:id="@+id/topTypeTextView"
             android:layout_gravity="center_horizontal" />
+        <!--android:text="@string/BROWSE_TOPS_topTypeDisplay"-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/BROWSE_TOPS_sleeveTypeDisplay"
+
             android:id="@+id/sleeveTypeTextView"
             android:layout_gravity="center_horizontal" />
+        <!--android:text="@string/BROWSE_TOPS_sleeveTypeDisplay"-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/BROWSE_TOPS_colorDisplay"
+
             android:id="@+id/colorTextView"
             android:layout_gravity="center_horizontal" />
+        <!--android:text="@string/BROWSE_TOPS_colorDisplay"-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/BROWSE_TOPS_minTempDisplay"
+
             android:id="@+id/minTempTextView"
             android:layout_gravity="center_horizontal" />
+        <!--android:text="@string/BROWSE_TOPS_minTempDisplay"-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/BROWSE_TOPS_maxTempDisplay"
+
             android:id="@+id/maxTempTextView"
+            android:layout_gravity="center_horizontal"
+            />
+        <!--android:text="@string/BROWSE_TOPS_maxTempDisplay"-->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete Item"
+            android:id="@+id/deleteTopButton"
+            android:layout_below="@+id/maxTempTextView"
             android:layout_gravity="center_horizontal" />
 
 

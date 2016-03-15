@@ -27,11 +27,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ClimaClothesActivites.BrowseBottomsActivity"
-            android:label="@string/title_activity_catalog_bottom"
+            android:label="@string/title_activity_browse_bottom"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ClimaClothesActivites.BrowseTopsActivity"
-            android:label="@string/title_activity_catalog_bottom"
+            android:label="@string/title_activity_browse_top"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <uses-feature android:name="android.hardware.camera" />

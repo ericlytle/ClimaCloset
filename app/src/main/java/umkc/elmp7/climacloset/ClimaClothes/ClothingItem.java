@@ -16,5 +16,5 @@ public interface ClothingItem {
 
     public double getMaxTemp();
 
-    //public String getID();
+    public long getID();
 }

@@ -1,12 +1,15 @@
 package umkc.elmp7.climacloset.ClimaClothesActivites;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,16 +21,18 @@ import umkc.elmp7.climacloset.ClimaUtil.*;
 import umkc.elmp7.climacloset.R;
 public class BrowseTopsActivity extends AppCompatActivity {
     private final String WHITESPACE = " ";
-    private ClimaClosetDB DB;
+    //private ClimaClosetDB DB;
     private TextView topTypeTextView, sleeveTypeTextView, colorTextView, minTempTextView, maxTempTextView;
     private Cursor cursor;
     private ImageView imageView;
+    private Button deleteTopButton;
+    ClimaClosetTop tempTop,temp;
+    LinearLayout linearLayout;
 
     public void onCreate(Bundle savedInstanceState) {
-        ClimaClosetTop tempTop;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_tops);
-
+        final ClimaClosetDB DB = new ClimaClosetDB(getApplicationContext());
         //Set up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -47,12 +52,31 @@ public class BrowseTopsActivity extends AppCompatActivity {
         colorTextView = (TextView) findViewById(R.id.colorTextView);
         minTempTextView  = (TextView) findViewById(R.id.minTempTextView);
         maxTempTextView = (TextView) findViewById(R.id.maxTempTextView);
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.browseTopsLayout);
+        deleteTopButton = (Button) findViewById(R.id.deleteTopButton);
+        linearLayout = (LinearLayout) findViewById(R.id.browseTopsLayout);
 
         //Initialize database
-        DB = new ClimaClosetDB(getApplicationContext());
+        //DB = new ClimaClosetDB(getApplicationContext());
 
+        loadPictures();
+
+        deleteTopButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (DB.deleteItem(temp, DB.SHIRTS_TABLE))
+                    loadPictures();
+                    clearFields();
+                Snackbar.make(findViewById(android.R.id.content), "Item deleted successfully", Snackbar.LENGTH_LONG)
+                        .show();
+            }
+        });
+    }
+
+    private void loadPictures(){
+        final ClimaClosetDB DB = new ClimaClosetDB(getApplicationContext());
         //Run query on database
+        linearLayout.removeAllViews();
         cursor = DB.ClimaQueryTop(0.0);
         while(cursor.moveToNext()){
             tempTop = new ClimaClosetTop(ClimaUtilities.getCursorImage(cursor, DB.SHIRTS_KEY_PICTURE),
@@ -71,7 +95,7 @@ public class BrowseTopsActivity extends AppCompatActivity {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ClimaClosetTop temp = (ClimaClosetTop) v.getTag();
+                    temp = (ClimaClosetTop) v.getTag();
                     topTypeTextView.setText(getResources().getString(R.string.BROWSE_TOPS_topTypeDisplay) + WHITESPACE + temp.getTopType());
                     sleeveTypeTextView.setText(getResources().getString(R.string.BROWSE_TOPS_sleeveTypeDisplay) + WHITESPACE + temp.getSleeveType());
                     colorTextView.setText(getResources().getString(R.string.BROWSE_TOPS_colorDisplay) + WHITESPACE + temp.getColor());
@@ -83,6 +107,18 @@ public class BrowseTopsActivity extends AppCompatActivity {
             });
             linearLayout.addView(imageView);
         }
+        if (linearLayout.getChildCount() == 0)
+            deleteTopButton.setVisibility(View.INVISIBLE);
+        else
+            deleteTopButton.setVisibility(View.VISIBLE);
+    }
+
+    private void clearFields(){
+        topTypeTextView.setText("");
+        sleeveTypeTextView.setText("");
+        colorTextView.setText("");
+        minTempTextView.setText("");
+        maxTempTextView.setText("");
     }
 
 }

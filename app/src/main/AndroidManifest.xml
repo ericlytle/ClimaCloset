@@ -3,6 +3,8 @@
     package="umkc.elmp7.climacloset">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -35,6 +37,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <uses-feature android:name="android.hardware.camera" />
+
         <!--
              ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -44,5 +47,6 @@
             android:value="@integer/google_play_services_version" />
 
     </application>
+
 
 </manifest>

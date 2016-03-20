@@ -25,7 +25,7 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
     private static String DATABASE_NAME = "ClimaClosetDB.sqlite";
 
 
-    public SQLiteDatabase ClimaDB;
+   // public SQLiteDatabase ClimaDB;
 
     public ClimaClosetDB(Context context){
         super(context, DATABASE_NAME, null, 1);
@@ -87,7 +87,7 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
                 SHIRTS_KEY_TOP_TYPE };
         Cursor cursor = SQLDB.query(SHIRTS_TABLE,
                 null,
-                null,//where
+                currentTemp +"<"+SHIRTS_KEY_MAX_TEMP +" and "+ currentTemp +">"+SHIRTS_KEY_MIN_TEMP,//where
                 null,
                 null,
                 null,
@@ -97,11 +97,9 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
 
     public Cursor ClimaQueryBottom(double currentTemp){
         SQLiteDatabase SQLDB = this.getWritableDatabase();
-        String[] from = { SHIRTS_KEY_ID,
-                SHIRTS_KEY_TOP_TYPE };
         Cursor cursor = SQLDB.query(BOTTOMS_TABLE,
                 null,
-                null,//where
+                currentTemp + "<" + BOTTOMS_KEY_MAX_TEMP + " and " + currentTemp + ">" + BOTTOMS_KEY_MIN_TEMP,//where
                 null,
                 null,
                 null,

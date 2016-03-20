@@ -77,7 +77,7 @@ public class BrowseTopsActivity extends AppCompatActivity {
         final ClimaClosetDB DB = new ClimaClosetDB(getApplicationContext());
         //Run query on database
         linearLayout.removeAllViews();
-        cursor = DB.ClimaQueryTop(0.0);
+        cursor = DB.ClimaQueryTop(Double.parseDouble(ClimaUtilities.temperature));
         while(cursor.moveToNext()){
             tempTop = new ClimaClosetTop(ClimaUtilities.getCursorImage(cursor, DB.SHIRTS_KEY_PICTURE),
                     ClimaUtilities.getCursorString(cursor, DB.SHIRTS_KEY_AVAILABLE),

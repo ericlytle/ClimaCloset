@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
  * Created by ericl on 2/29/2016.
  */
 public class ClimaUtilities {
+    public static String temperature;
     private static Resources resources;
     public static byte[] getBytes(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -41,5 +42,9 @@ public class ClimaUtilities {
 
     public static String getResourceString(int ID){
         return resources.getString(ID);
+    }
+
+    public static String parseSpaces(String parseString){
+        return parseString.replaceAll(" ", "%20");
     }
 }

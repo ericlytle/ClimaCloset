@@ -1,8 +1,16 @@
 package umkc.elmp7.climacloset.OpenWeather;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import umkc.elmp7.climacloset.JSON.JSONService;
 
@@ -29,4 +37,5 @@ public class OpenWeatherService {
             throw new Exception("Problem in OpenWeatherService.getTemperature()");
         }
     }
+
 }

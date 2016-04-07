@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetTop;
 import umkc.elmp7.climacloset.ClimaDB.ClimaClosetDB;
+import umkc.elmp7.climacloset.Exceptions.AddItemException;
 import umkc.elmp7.climacloset.R;
 import umkc.elmp7.climacloset.ClimaUtil.*;
 
@@ -82,24 +83,25 @@ public class CatalogTopActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    boolean success = DB.addTop(new ClimaClosetTop(photo,
+                    DB.addTop(new ClimaClosetTop(photo,
                             getResources().getString(R.string.DB_AVAIL),
                             colorET.getSelectedItem().toString(),
                             topTypeET.getText().toString(),
                             Double.parseDouble(minTempET.getText().toString()),
                             Double.parseDouble(maxTempET.getText().toString()),
                             sleeveTypeET.getSelectedItem().toString()));
-                    if (success) {
-                        Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.Top_catalog_success), Snackbar.LENGTH_LONG)
-                                .show();
-                        clearFields();
-                    }
-                    else{
-                        Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.Top_catalog_failure), Snackbar.LENGTH_LONG)
-                                .show();
-                    }
-                } catch (Exception e) {
-                    Log.d("submitOnClick", e.getMessage());
+                    Snackbar.make(findViewById(android.R.id.content),
+                            getResources().getString(R.string.Top_catalog_success),
+                            Snackbar.LENGTH_LONG)
+                            .show();
+                    clearFields();
+                }
+                catch (AddItemException e) {
+                    Log.d("AddItemException", e.getMessage());
+                    Snackbar.make(findViewById(android.R.id.content),
+                            getResources().getString(R.string.Top_catalog_failure),
+                            Snackbar.LENGTH_LONG)
+                            .show();
                 }
             }
         });
@@ -113,19 +115,19 @@ public class CatalogTopActivity extends AppCompatActivity {
             }
         });
 
-        //to be removed
-        populate.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Cursor cursor = DB.ClimaQueryTop(0.0);
-                cursor.moveToFirst();
-                topTypeET.setText(cursor.getString(cursor.getColumnIndex(DB.SHIRTS_KEY_TOP_TYPE)));
-                photoPreview.setImageBitmap(ClimaUtilities.getCursorImage(cursor, DB.SHIRTS_KEY_PICTURE));
-                photoPreview.setEnabled(true);
-
-            }
-        });
+//        //to be removed
+//        populate.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                Cursor cursor = DB.ClimaQueryTop(0.0);
+//                cursor.moveToFirst();
+//                topTypeET.setText(cursor.getString(cursor.getColumnIndex(DB.SHIRTS_KEY_TOP_TYPE)));
+//                photoPreview.setImageBitmap(ClimaUtilities.getCursorImage(cursor, DB.SHIRTS_KEY_PICTURE));
+//                photoPreview.setEnabled(true);
+//
+//            }
+//        });
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

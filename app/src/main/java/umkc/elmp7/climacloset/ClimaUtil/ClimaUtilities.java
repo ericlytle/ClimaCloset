@@ -4,6 +4,8 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 
 import java.io.ByteArrayOutputStream;
 
@@ -46,5 +48,13 @@ public class ClimaUtilities {
 
     public static String parseSpaces(String parseString){
         return parseString.replaceAll(" ", "%20");
+    }
+
+    public static void SnackbarMessage(View view, String message)
+    {
+        Snackbar.make(view,
+                message,
+                Snackbar.LENGTH_LONG)
+                .show();
     }
 }

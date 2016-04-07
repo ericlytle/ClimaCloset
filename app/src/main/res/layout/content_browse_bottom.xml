@@ -22,29 +22,55 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/BROWSE_BOTTOMS_bottomTypeDisplay"
+
             android:id="@+id/bottomTypeTextView"
             android:layout_gravity="center_horizontal" />
+        <!--android:text="@string/BROWSE_BOTTOMS_bottomTypeDisplay"-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/BROWSE_BOTTOMS_colorDisplay"
+
             android:id="@+id/colorBottomTextView"
             android:layout_gravity="center_horizontal" />
+        <!--android:text="@string/BROWSE_BOTTOMS_colorDisplay" -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/BROWSE_BOTTOMS_minTempDisplay"
+
             android:id="@+id/minTempBottomTextView"
             android:layout_gravity="center_horizontal" />
+        <!--android:text="@string/BROWSE_BOTTOMS_minTempDisplay"-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/BROWSE_BOTTOMS_maxTempDisplay"
+
             android:id="@+id/maxTempBottomTextView"
+            android:layout_gravity="center_horizontal" />
+        <!--android:text="@string/BROWSE_BOTTOMS_maxTempDisplay"-->
+        <Spinner
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/filterClothingSpinner"
+            android:gravity="center"
+            android:layout_below="@+id/maxTempBottomTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mark Dirty"
+            android:id="@+id/markDirty"
+            android:layout_below="@+id/filterClothingSpinner"
+            android:layout_gravity="center_horizontal" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete Item"
+            android:id="@+id/deleteBottomButton"
+            android:layout_below="@+id/markDirty"
             android:layout_gravity="center_horizontal" />
 
 

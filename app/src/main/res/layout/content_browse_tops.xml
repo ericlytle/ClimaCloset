@@ -58,12 +58,27 @@
             android:layout_gravity="center_horizontal"
             />
         <!--android:text="@string/BROWSE_TOPS_maxTempDisplay"-->
+        <Spinner
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/filterClothingTopSpinner"
+            android:gravity="center"
+            android:layout_below="@+id/maxTempTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mark Dirty"
+            android:id="@+id/topMarkDirtyButton"
+            android:layout_below="@+id/filterClothingTopSpinner"
+            android:layout_gravity="center_horizontal" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Delete Item"
             android:id="@+id/deleteTopButton"
-            android:layout_below="@+id/maxTempTextView"
+            android:layout_below="@+id/topMarkDirtyButton"
             android:layout_gravity="center_horizontal" />
 
 

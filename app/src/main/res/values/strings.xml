@@ -11,6 +11,7 @@
     <string name="maximum_temperature_edittext_hint">Maximum Temperature</string>
     <string name="SNACKBAR_id_display">Clothing Item ID:</string>
     <string name="DB_AVAIL">Avail</string>
+    <string name="DB_NOT_AVAIL">nAvail</string>
     <string name="Bottom_catalog_success">Bottom Catalogged Successfully!</string>
     <string name="Bottom_catalog_failure">Bottom Catalog Failed!</string>
     <string name="Top_catalog_success">Top Catalogged Successfully!</string>
@@ -19,6 +20,11 @@
         <item>Short Sleeve</item>
         <item>3/4 Sleeve</item>
         <item>Long Sleeve</item>
+    </string-array>
+    <string-array name="clothingFilter">
+        <item>All</item>
+        <item>Dirty</item>
+        <item>Clean</item>
     </string-array>
     <string-array name="color_array">
         <item>Red</item>

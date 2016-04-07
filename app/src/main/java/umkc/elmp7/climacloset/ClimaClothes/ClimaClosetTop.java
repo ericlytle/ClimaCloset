@@ -73,4 +73,8 @@ public class ClimaClosetTop implements ClothingItem{
 
     @Override
     public long getID(){return ID;}
+
+    public void updateAvailability(String Availability){
+        this.availability = Availability;
+    }
 }

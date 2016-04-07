@@ -15,6 +15,12 @@ import java.sql.SQLException;
 import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetBottom;
 import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetTop;
 import umkc.elmp7.climacloset.ClimaClothes.ClothingItem;
+import umkc.elmp7.climacloset.Exceptions.AddItemException;
+import umkc.elmp7.climacloset.Exceptions.AvailabilityException;
+import umkc.elmp7.climacloset.Exceptions.DeleteItemException;
+import umkc.elmp7.climacloset.Exceptions.QueryException;
+import umkc.elmp7.climacloset.Exceptions.UpdateException;
+import umkc.elmp7.climacloset.R;
 
 /**
  * Created by ericl on 2/15/2016.
@@ -52,13 +58,17 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
         onCreate(SQLDB);
     }
 
-    public boolean deleteItem(ClothingItem item, String table) {
+    public boolean deleteItem(ClothingItem item, String table) throws DeleteItemException {
         SQLiteDatabase SQLDB = this.getWritableDatabase();
-
-        return SQLDB.delete(table, IDTEXT + "=" + item.getID(), null) > 0;
+        if (SQLDB.delete(table, IDTEXT + "=" + item.getID(), null) > 0)
+            return true;
+        else {
+            DeleteItemException exception = new DeleteItemException(item, table);
+            throw exception;
+        }
     }
 
-    public boolean addTop(ClimaClosetTop newTop) throws SQLException{
+    public boolean addTop(ClimaClosetTop newTop) throws AddItemException{
         SQLiteDatabase SQLDB = this.getWritableDatabase();
         long rowID;
 
@@ -71,42 +81,133 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
         topValues.put(SHIRTS_KEY_MIN_TEMP, newTop.getMinTemp());
         topValues.put(SHIRTS_KEY_MAX_TEMP, newTop.getMaxTemp());
 
-        try{
-            rowID = SQLDB.insertOrThrow(SHIRTS_TABLE, null, topValues);
-        }
-        catch(Exception exception)
+        rowID = SQLDB.insert(SHIRTS_TABLE, null, topValues);
+        if (rowID < 0)
         {
-            Log.e("Exception", "SQLInsert::addTop::" + String.valueOf(exception.getMessage()));
-            return false;
+            AddItemException exception = new AddItemException(newTop, SHIRTS_TABLE);
+            throw exception;
         }
+
         return true;
     }
-    public Cursor ClimaQueryTop(double currentTemp){
+    public Cursor ClimaQueryTop(double currentTemp, String availability) throws AvailabilityException, QueryException{
         SQLiteDatabase SQLDB = this.getWritableDatabase();
-        String[] from = { SHIRTS_KEY_ID,
-                SHIRTS_KEY_TOP_TYPE };
+        String whereClause;
+        switch (availability){
+            case ("All"):
+                whereClause = currentTemp + "<" +  SHIRTS_KEY_MAX_TEMP + "  and " + currentTemp + ">" +  SHIRTS_KEY_MIN_TEMP;
+                break;
+            case ("Clean"):
+                whereClause = currentTemp + "<" +  SHIRTS_KEY_MAX_TEMP + "  and " + currentTemp + ">" +  SHIRTS_KEY_MIN_TEMP
+                        + " and 'Avail' = " +  SHIRTS_KEY_AVAILABLE;
+                break;
+            case ("Dirty"):
+                whereClause = currentTemp + "<" + SHIRTS_KEY_MAX_TEMP + "  and " + currentTemp + ">" + SHIRTS_KEY_MIN_TEMP
+                        + " and 'nAvail' = " + SHIRTS_KEY_AVAILABLE;
+                break;
+            default:
+                AvailabilityException exception = new AvailabilityException(availability);
+                throw exception;
+        }
         Cursor cursor = SQLDB.query(SHIRTS_TABLE,
                 null,
-                currentTemp +"<"+SHIRTS_KEY_MAX_TEMP +" and "+ currentTemp +">"+SHIRTS_KEY_MIN_TEMP,//where
+                whereClause,
                 null,
                 null,
                 null,
                 null);
+        if (cursor == null){
+            QueryException exception = new QueryException(BOTTOMS_TABLE, whereClause);
+            throw exception;
+        }
+
         return cursor;
     }
 
-    public Cursor ClimaQueryBottom(double currentTemp){
+    public boolean markBottomItemDirty(ClimaClosetBottom climaBottom, String table) throws UpdateException
+    {
+        long updates;
         SQLiteDatabase SQLDB = this.getWritableDatabase();
-        Cursor cursor = SQLDB.query(BOTTOMS_TABLE,
+        ContentValues bottomValues = new ContentValues();
+        bottomValues.put(BOTTOMS_KEY_TYPE, climaBottom.getBottomType());
+        bottomValues.put(BOTTOMS_KEY_PICTURE, getBytes(climaBottom.getPicture()));
+        bottomValues.put(BOTTOMS_KEY_AVAILABILITY, climaBottom.getAvailability());
+        bottomValues.put(BOTTOMS_KEY_COLOR, climaBottom.getColor());
+        bottomValues.put(BOTTOMS_KEY_MIN_TEMP, climaBottom.getMinTemp());
+        bottomValues.put(BOTTOMS_KEY_MAX_TEMP, climaBottom.getMaxTemp());
+        updates = SQLDB.update(BOTTOMS_TABLE,
+                bottomValues,
+                ClimaClosetDB.BOTTOMS_KEY_ID + " = " + String.valueOf(climaBottom.getID()), null);
+        if (updates < 1){
+            UpdateException exception = new UpdateException(climaBottom.getID(), BOTTOMS_TABLE);
+            throw exception;
+        }
+        if (climaBottom.getAvailability().equalsIgnoreCase("avail"))
+            climaBottom.updateAvailability("nAvail");
+        else if (climaBottom.getAvailability().equalsIgnoreCase("navail"))
+            climaBottom.updateAvailability("Avail");
+        return true;
+    }
+
+    public boolean markTopItemDirty(ClimaClosetTop climaTop, String table) throws UpdateException
+    {
+        long updates;
+        SQLiteDatabase SQLDB = this.getWritableDatabase();
+        ContentValues topValues = new ContentValues();
+        topValues.put(SHIRTS_KEY_SLEEVE_TYPE, climaTop.getSleeveType());
+        topValues.put(SHIRTS_KEY_TOP_TYPE, climaTop.getTopType());
+        topValues.put(SHIRTS_KEY_PICTURE, getBytes(climaTop.getPicture()));
+        topValues.put(SHIRTS_KEY_AVAILABLE, climaTop.getAvailability());
+        topValues.put(SHIRTS_KEY_COLOR, climaTop.getColor());
+        topValues.put(SHIRTS_KEY_MIN_TEMP, climaTop.getMinTemp());
+        topValues.put(SHIRTS_KEY_MAX_TEMP, climaTop.getMaxTemp());
+        updates = SQLDB.update(SHIRTS_TABLE,
+                topValues,
+                ClimaClosetDB.SHIRTS_KEY_ID + " = " + String.valueOf(climaTop.getID()), null);
+        if (updates < 1){
+            UpdateException exception = new UpdateException(climaTop.getID(), BOTTOMS_TABLE);
+            throw exception;
+        }
+//        if (climaTop.getAvailability().equalsIgnoreCase("avail"))
+//            climaTop.updateAvailability("nAvail");
+//        else if (climaTop.getAvailability().equalsIgnoreCase("navail"))
+//            climaTop.updateAvailability("Avail");
+        return true;
+    }
+
+    public Cursor ClimaQueryBottom(double currentTemp, String availability) throws QueryException, AvailabilityException{
+        SQLiteDatabase SQLDB = this.getWritableDatabase();
+        String where;
+        switch (availability){
+            case ("All"):
+                where = currentTemp + "<" + "b." + BOTTOMS_KEY_MAX_TEMP + "  and " + currentTemp + ">" + "b." + BOTTOMS_KEY_MIN_TEMP;
+                break;
+            case ("Clean"):
+                where = currentTemp + "<" + "b." + BOTTOMS_KEY_MAX_TEMP + "  and " + currentTemp + ">" + "b." + BOTTOMS_KEY_MIN_TEMP
+                        + " and 'Avail' = " + "b." + BOTTOMS_KEY_AVAILABILITY;
+                break;
+            case ("Dirty"):
+                where = currentTemp + "<" + "b." + BOTTOMS_KEY_MAX_TEMP + "  and " + currentTemp + ">" + "b." + BOTTOMS_KEY_MIN_TEMP
+                    + " and 'nAvail' = " + "b." + BOTTOMS_KEY_AVAILABILITY;
+                break;
+            default:
+                AvailabilityException exception = new AvailabilityException(availability);
+                throw exception;
+        }
+        Cursor cursor = SQLDB.query(BOTTOMS_TABLE + " b ",
                 null,
-                currentTemp + "<" + BOTTOMS_KEY_MAX_TEMP + " and " + currentTemp + ">" + BOTTOMS_KEY_MIN_TEMP,//where
+                where ,//where
                 null,
                 null,
                 null,
                 null);
+        if (cursor == null){
+            QueryException exception = new QueryException(BOTTOMS_TABLE, where);
+            throw exception;
+        }
         return cursor;
     }
-    public boolean addBottom(ClimaClosetBottom newBottom) throws SQLException{
+    public boolean addBottom(ClimaClosetBottom newBottom) throws AddItemException{
         SQLiteDatabase SQLDB = this.getWritableDatabase();
         long rowID;
 
@@ -117,14 +218,11 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
         bottomValues.put(BOTTOMS_KEY_COLOR, newBottom.getColor());
         bottomValues.put(BOTTOMS_KEY_MIN_TEMP, newBottom.getMinTemp());
         bottomValues.put(BOTTOMS_KEY_MAX_TEMP, newBottom.getMaxTemp());
-
-        try{
-            rowID = SQLDB.insertOrThrow(BOTTOMS_TABLE, null, bottomValues);
-        }
-        catch(Exception exception)
+        rowID = SQLDB.insert(BOTTOMS_TABLE, null, bottomValues);
+        if (rowID < 0)
         {
-            Log.e("Exception", "SQLInsert::addBottom::" + String.valueOf(exception.getMessage()));
-            return false;
+            AddItemException exception = new AddItemException(newBottom, BOTTOMS_TABLE);
+            throw exception;
         }
         return true;
     }

@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetBottom;
 import umkc.elmp7.climacloset.ClimaDB.ClimaClosetDB;
-import umkc.elmp7.climacloset.ClimaUtil.ClimaUtilities;
+import umkc.elmp7.climacloset.Exceptions.AddItemException;
 import umkc.elmp7.climacloset.R;
 
 public class CatalogBottomActivity extends AppCompatActivity {
@@ -74,25 +74,21 @@ public class CatalogBottomActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            try {
-                boolean success = DB.addBottom(new ClimaClosetBottom(photo,
-                        getResources().getString(R.string.DB_AVAIL),
-                        colorET.getSelectedItem().toString(),
-                        bottomTypeET.getText().toString(),
-                        Double.parseDouble(minTempET.getText().toString()),
-                        Double.parseDouble(maxTempET.getText().toString())));
-                if (success) {
-                    Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.Bottom_catalog_success), Snackbar.LENGTH_LONG)
-                            .show();
-                    clearFields();
+                try {
+                        DB.addBottom(new ClimaClosetBottom(photo,
+                            getResources().getString(R.string.DB_AVAIL),
+                            colorET.getSelectedItem().toString(),
+                            bottomTypeET.getText().toString(),
+                            Double.parseDouble(minTempET.getText().toString()),
+                            Double.parseDouble(maxTempET.getText().toString())));
+                        Snackbar.make(findViewById(android.R.id.content),
+                                getResources().getString(R.string.Bottom_catalog_success),
+                                Snackbar.LENGTH_LONG)
+                                .show();
+                        clearFields();
+                } catch (AddItemException e) {
+                    Log.d("AddItemException", e.getMessage());
                 }
-                else{
-                    Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.Bottom_catalog_failure), Snackbar.LENGTH_LONG)
-                            .show();
-                }
-            } catch (Exception e) {
-                Log.d("submitOnClick", e.getMessage());
-            }
             }
         });
 

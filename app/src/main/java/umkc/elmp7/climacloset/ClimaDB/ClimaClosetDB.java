@@ -65,6 +65,7 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
         onCreate(SQLDB);
     }
 
+    //    Throws - DeleteItemException if an item was not delted successfully
     public boolean deleteItem(ClothingItem item, String table) throws DeleteItemException {
         SQLiteDatabase SQLDB = this.getWritableDatabase();
         if (SQLDB.delete(table, IDTEXT + "=" + item.getID(), null) > 0)
@@ -75,6 +76,8 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
         }
     }
 
+    //   Throws - AddItemException if an item was not successfully
+    //            added to the database
     public boolean addTop(ClimaClosetTop newTop) throws AddItemException{
         SQLiteDatabase SQLDB = this.getWritableDatabase();
         long rowID;
@@ -97,6 +100,9 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
 
         return true;
     }
+
+    //   Throws - AvailabilityException if an invalid availability is queried upon
+    //          - QueryException if the query returns zero results
     public Cursor ClimaQueryTop(double currentTemp, String availability) throws AvailabilityException, QueryException{
         SQLiteDatabase SQLDB = this.getWritableDatabase();
         String whereClause;
@@ -131,6 +137,7 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
         return cursor;
     }
 
+    //   Throws - UpdateException if the item was not updated successfully
     public boolean markBottomItemDirty(ClimaClosetBottom climaBottom, String table) throws UpdateException
     {
         long updates;
@@ -152,6 +159,7 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
         return true;
     }
 
+    //   Throws - UpdateException if the item was not updated successfully
     public boolean markTopItemDirty(ClimaClosetTop climaTop, String table) throws UpdateException
     {
         long updates;
@@ -174,6 +182,8 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
         return true;
     }
 
+    //   Throws - AvailabilityException if an invalid availability is queried upon
+    //          - QueryException if the query returns zero results
     public Cursor ClimaQueryBottom(double currentTemp, String availability) throws QueryException, AvailabilityException{
         SQLiteDatabase SQLDB = this.getWritableDatabase();
         String where;
@@ -206,6 +216,9 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
         }
         return cursor;
     }
+
+    //   Throws - AddItemException if an item was not successfully
+    //            added to the database
     public boolean addBottom(ClimaClosetBottom newBottom) throws AddItemException{
         SQLiteDatabase SQLDB = this.getWritableDatabase();
         long rowID;

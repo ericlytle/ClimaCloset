@@ -50,7 +50,6 @@ public class BrowseBottomsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
         //Initialize textviews
         bottomTypeTextView = (TextView) findViewById(R.id.bottomTypeTextView);
         colorTextView = (TextView) findViewById(R.id.colorBottomTextView);
@@ -59,13 +58,13 @@ public class BrowseBottomsActivity extends AppCompatActivity {
 
         //Initialize Buttons
         deleteBottomButton = (Button) findViewById(R.id.deleteBottomButton);
-        markDirtyButton = (Button) findViewById(R.id.markDirty);
+        markDirtyButton = (Button) findViewById(R.id.markDirtyBottomButton);
 
         //Ititialize spinner
         filterSpinner = (Spinner) findViewById(R.id.filterClothingSpinner);
 
         //Initialize Database
-        DB = new ClimaClosetDB(getApplicationContext());
+        DB = ClimaClosetDB.instance(getApplicationContext());
 
         //Initialize linear layout
         linearLayout = (LinearLayout) findViewById(R.id.browseBottomLayout);
@@ -80,12 +79,11 @@ public class BrowseBottomsActivity extends AppCompatActivity {
 
         //Initialize button click listeners
         toolbar.setNavigationOnClickListener(backButtonClickListener);
-        markDirtyButton.setOnClickListener(markDirtyButtonClickListener);
+        markDirtyButton.setOnClickListener(markItemDirtyButtonClickListener);
         deleteBottomButton.setOnClickListener(deleteBottomButtonClickListener);
     }
 
     private void loadPictures(String availability){
-        final ClimaClosetDB DB = new ClimaClosetDB(getApplicationContext());
 
         linearLayout.removeAllViews();
 
@@ -123,6 +121,14 @@ public class BrowseBottomsActivity extends AppCompatActivity {
                     maxTempTextView.setText(getResources().getString(R.string.BROWSE_BOTTOMS_maxTempDisplay) + WHITESPACE + String.valueOf(temp.getMaxTemp()));
                     Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.SNACKBAR_id_display) + WHITESPACE + String.valueOf(temp.getID()), Snackbar.LENGTH_LONG)
                             .show();
+                    if (temp.getAvailability().equalsIgnoreCase("Avail")) {
+                        markDirtyButton.setText("Mark Dirty");
+                    }
+                    if (temp.getAvailability().equalsIgnoreCase("nAvail")) {
+                        markDirtyButton.setText("Mark Clean");
+                    }
+                    deleteBottomButton.setVisibility(View.VISIBLE);
+                    markDirtyButton.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -145,6 +151,8 @@ public class BrowseBottomsActivity extends AppCompatActivity {
         colorTextView.setText("");
         minTempTextView.setText("");
         maxTempTextView.setText("");
+        deleteBottomButton.setVisibility(View.INVISIBLE);
+        markDirtyButton.setVisibility(View.INVISIBLE);
     }
 
     void buildSpinner(){
@@ -196,11 +204,22 @@ public class BrowseBottomsActivity extends AppCompatActivity {
         }
     };
 
-    private View.OnClickListener markDirtyButtonClickListener = new View.OnClickListener(){
+    private View.OnClickListener markItemDirtyButtonClickListener = new View.OnClickListener(){
 
         @Override
         public void onClick(View v) {
             try{
+                if (temp != null)
+                {
+                    switch (temp.getAvailability()){
+                        case ("Avail"):
+                            temp.updateAvailability("nAvail");
+                            break;
+                        case ("nAvail"):
+                            temp.updateAvailability("Avail");
+                            break;
+                    }
+                }
                 DB.markBottomItemDirty(temp, DB.BOTTOMS_TABLE);
                 loadPictures(filterSpinner.getSelectedItem().toString());
                 clearFields();

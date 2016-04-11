@@ -1,13 +1,28 @@
 package umkc.elmp7.climacloset.ClimaUtil;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.support.design.widget.Snackbar;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
+
+import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetTop;
+import umkc.elmp7.climacloset.ClimaClothes.ClothingItem;
+import umkc.elmp7.climacloset.ClimaDB.ClimaClosetDB;
+import umkc.elmp7.climacloset.R;
 
 /**
  * Created by ericl on 2/29/2016.
@@ -56,5 +71,39 @@ public class ClimaUtilities {
                 message,
                 Snackbar.LENGTH_LONG)
                 .show();
+    }
+
+    public static void buildSpinner(Spinner spinner, Context context){
+        String[] filterItemsArray = context.getResources().getStringArray(R.array.clothingFilter);
+        SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, filterItemsArray )
+        {
+            @Override
+            public View getView(int position, View convertView,ViewGroup parent) {
+
+                View v = super.getView(position, convertView, parent);
+
+                ((TextView) v).setGravity(Gravity.CENTER);
+                ((TextView) v).setTextColor(Color.BLACK);
+
+                return v;
+
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                ((TextView ) view).setGravity(Gravity.CENTER);
+                ((TextView) view).setTextColor(Color.BLACK);
+                ((TextView) view).setTextSize(20);
+                if (position % 2 == 0) { // we're on an even row
+                    view.setBackgroundColor(Color.WHITE);
+                } else {
+                    view.setBackgroundColor(Color.LTGRAY);
+                }
+                return view;
+            }
+
+        };
+        spinner.setAdapter(spinnerAdapter);
     }
 }

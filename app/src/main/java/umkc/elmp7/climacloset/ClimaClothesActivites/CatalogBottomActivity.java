@@ -65,7 +65,7 @@ public class CatalogBottomActivity extends AppCompatActivity {
         this.submitButton = (Button) this.findViewById(R.id.submitBottom);
 
         //Initialize database
-        DB = new ClimaClosetDB(getApplicationContext());
+        DB = ClimaClosetDB.instance(getApplicationContext());
 
         //Build color and sleeve type spinners
         buildSpinner();

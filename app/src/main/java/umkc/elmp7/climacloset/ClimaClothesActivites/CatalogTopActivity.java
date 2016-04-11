@@ -73,7 +73,7 @@ public class CatalogTopActivity extends AppCompatActivity {
         Button submitButton = (Button) this.findViewById(R.id.submitTop);
 
         //Initialize database
-        DB = new ClimaClosetDB(getApplicationContext());
+        DB = ClimaClosetDB.instance(getApplicationContext());
 
         //Build color and sleeve type spinners
         buildSpinner();
@@ -114,20 +114,6 @@ public class CatalogTopActivity extends AppCompatActivity {
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
         });
-
-//        //to be removed
-//        populate.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                Cursor cursor = DB.ClimaQueryTop(0.0);
-//                cursor.moveToFirst();
-//                topTypeET.setText(cursor.getString(cursor.getColumnIndex(DB.SHIRTS_KEY_TOP_TYPE)));
-//                photoPreview.setImageBitmap(ClimaUtilities.getCursorImage(cursor, DB.SHIRTS_KEY_PICTURE));
-//                photoPreview.setEnabled(true);
-//
-//            }
-//        });
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

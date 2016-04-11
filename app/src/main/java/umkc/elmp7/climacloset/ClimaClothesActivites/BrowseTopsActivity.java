@@ -36,13 +36,12 @@ public class BrowseTopsActivity extends AppCompatActivity {
     private Cursor cursor;
     private ImageView imageView;
     private Button deleteTopButton, markItemDirtyButton;
-    private ClimaClosetTop tempTop,temp, updateAvailTop;
+    private ClimaClosetTop tempTop,temp;
     private LinearLayout linearLayout;
     private Spinner filterSpinner;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_browse_tops);
 
         //Set up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -50,12 +49,6 @@ public class BrowseTopsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
 
         //initialize textviews
         topTypeTextView = (TextView) findViewById(R.id.topTypeTextView);
@@ -75,10 +68,11 @@ public class BrowseTopsActivity extends AppCompatActivity {
 
         //initialize spinner
         filterSpinner = (Spinner) findViewById(R.id.filterClothingTopSpinner);
-        buildSpinner();
+        //buildSpinner();
+        ClimaUtilities.buildSpinner(filterSpinner, getApplicationContext());
 
         //Initialize database
-        DB = new ClimaClosetDB(getApplicationContext());
+        DB = ClimaClosetDB.instance(getApplicationContext());
 
         loadPictures(filterSpinner.getSelectedItem().toString());
 
@@ -86,10 +80,10 @@ public class BrowseTopsActivity extends AppCompatActivity {
         deleteTopButton.setOnClickListener(deleteTopButtonClickListener);
         markItemDirtyButton.setOnClickListener(markItemDirtyButtonClickListener);
         filterSpinner.setOnItemSelectedListener(itemSelectedListener);
+        toolbar.setNavigationOnClickListener(backButtonClickListener);
     }
 
     private void loadPictures(String availability){
-        final ClimaClosetDB DB = new ClimaClosetDB(getApplicationContext());
         //Run query on database
         linearLayout.removeAllViews();
         try {
@@ -110,13 +104,7 @@ public class BrowseTopsActivity extends AppCompatActivity {
                     ClimaUtilities.getCursorDouble(cursor, DB.SHIRTS_KEY_MAX_TEMP),
                     ClimaUtilities.getCursorString(cursor, DB.SHIRTS_KEY_SLEEVE_TYPE),
                     ClimaUtilities.getCursorLong(cursor, DB.SHIRTS_KEY_ID));
-            if (imageView != null) {
-                if (imageView.getTag() == null) {
-                    updateAvailTop = tempTop;
-                } else {
-                    updateAvailTop = (ClimaClosetTop) imageView.getTag();
-                }
-            }
+
             imageView = new ImageView(this);
             imageView.setImageBitmap(tempTop.getPicture());
             imageView.setMinimumHeight(getResources().getInteger(R.integer.image_height));
@@ -145,10 +133,6 @@ public class BrowseTopsActivity extends AppCompatActivity {
             });
             linearLayout.addView(imageView);
         }
-//        if (linearLayout.getChildCount() == 0)
-//            deleteTopButton.setVisibility(View.INVISIBLE);
-//        else
-//            deleteTopButton.setVisibility(View.VISIBLE);
     }
 
     private void clearFields(){
@@ -159,40 +143,6 @@ public class BrowseTopsActivity extends AppCompatActivity {
         maxTempTextView.setText("");
         deleteTopButton.setVisibility(View.INVISIBLE);
         markItemDirtyButton.setVisibility(View.INVISIBLE);
-    }
-
-    void buildSpinner(){
-        String[] colorArray = getResources().getStringArray(R.array.clothingFilter);
-        SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, colorArray )
-        {
-            @Override
-            public View getView(int position, View convertView,ViewGroup parent) {
-
-                View v = super.getView(position, convertView, parent);
-
-                ((TextView) v).setGravity(Gravity.CENTER);
-                ((TextView) v).setTextColor(Color.BLACK);
-
-                return v;
-
-            }
-
-            @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                ((TextView ) view).setGravity(Gravity.CENTER);
-                ((TextView) view).setTextColor(Color.BLACK);
-                ((TextView) view).setTextSize(20);
-                if (position % 2 == 0) { // we're on an even row
-                    view.setBackgroundColor(Color.WHITE);
-                } else {
-                    view.setBackgroundColor(Color.LTGRAY);
-                }
-                return view;
-            }
-
-        };
-        filterSpinner.setAdapter(spinnerAdapter);
     }
 
     private View.OnClickListener deleteTopButtonClickListener = new View.OnClickListener(){
@@ -230,7 +180,7 @@ public class BrowseTopsActivity extends AppCompatActivity {
                             break;
                     }
                 }
-                DB.markTopItemDirty(temp, DB.BOTTOMS_TABLE);
+                DB.markTopItemDirty(temp, DB.SHIRTS_TABLE);
                 loadPictures(filterSpinner.getSelectedItem().toString());
                 clearFields();
                 ClimaUtilities.SnackbarMessage(findViewById(android.R.id.content), "Item updated!");
@@ -255,6 +205,15 @@ public class BrowseTopsActivity extends AppCompatActivity {
         public void onNothingSelected(AdapterView<?> arg0) {
             // TODO Auto-generated method stub
 
+        }
+    };
+
+    private View.OnClickListener backButtonClickListener = new View.OnClickListener(){
+
+        @Override
+        public void onClick(View v) {
+            Intent homeScreen = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(homeScreen);
         }
     };
 }

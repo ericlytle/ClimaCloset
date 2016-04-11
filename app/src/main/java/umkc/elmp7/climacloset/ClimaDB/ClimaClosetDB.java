@@ -29,12 +29,19 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
     //private Context dbContext;
     private static final String IDTEXT = "id";
     private static String DATABASE_NAME = "ClimaClosetDB.sqlite";
+    private static ClimaClosetDB instance;
 
 
    // public SQLiteDatabase ClimaDB;
 
-    public ClimaClosetDB(Context context){
+    private ClimaClosetDB(Context context){
         super(context, DATABASE_NAME, null, 1);
+    }
+
+    public static ClimaClosetDB instance(Context context){
+        if (instance == null)
+            instance = new ClimaClosetDB(context);
+        return instance;
     }
 
     @Override
@@ -142,10 +149,6 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
             UpdateException exception = new UpdateException(climaBottom.getID(), BOTTOMS_TABLE);
             throw exception;
         }
-        if (climaBottom.getAvailability().equalsIgnoreCase("avail"))
-            climaBottom.updateAvailability("nAvail");
-        else if (climaBottom.getAvailability().equalsIgnoreCase("navail"))
-            climaBottom.updateAvailability("Avail");
         return true;
     }
 
@@ -168,10 +171,6 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
             UpdateException exception = new UpdateException(climaTop.getID(), BOTTOMS_TABLE);
             throw exception;
         }
-//        if (climaTop.getAvailability().equalsIgnoreCase("avail"))
-//            climaTop.updateAvailability("nAvail");
-//        else if (climaTop.getAvailability().equalsIgnoreCase("navail"))
-//            climaTop.updateAvailability("Avail");
         return true;
     }
 

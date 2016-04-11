@@ -150,13 +150,16 @@ public class BrowseTopsActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            try
-            {
+            try {
                 DB.deleteItem(temp, DB.SHIRTS_TABLE);
                 loadPictures(filterSpinner.getSelectedItem().toString());
                 clearFields();
                 Snackbar.make(findViewById(android.R.id.content), "Item deleted successfully", Snackbar.LENGTH_LONG)
                         .show();
+                if (ClimaUtilities.ASSERTIONS_ENABLED) {
+                    assert markItemDirtyButton.getVisibility() == View.INVISIBLE : "DeleteTopButtonListener -- Mark item dirty button invisible";
+                    assert deleteTopButton.getVisibility() == View.INVISIBLE : "DeleteTopButtonListener -- delete item button invisible";
+                }
             }
             catch (DeleteItemException e)
             {
@@ -185,6 +188,10 @@ public class BrowseTopsActivity extends AppCompatActivity {
                 loadPictures(filterSpinner.getSelectedItem().toString());
                 clearFields();
                 ClimaUtilities.SnackbarMessage(findViewById(android.R.id.content), "Item updated!");
+                if (ClimaUtilities.ASSERTIONS_ENABLED) {
+                    assert markItemDirtyButton.getVisibility() == View.INVISIBLE : "MarkDirtyTopButtonListener -- Mark item dirty button invisible";
+                    assert deleteTopButton.getVisibility() == View.INVISIBLE : "MarkDirtyTopButtonListener -- delete item button invisible";
+                }
             }
             catch (UpdateException e)
             {
@@ -200,6 +207,10 @@ public class BrowseTopsActivity extends AppCompatActivity {
                                    long arg3) {
             clearFields();
             loadPictures(filterSpinner.getSelectedItem().toString());
+            if (ClimaUtilities.ASSERTIONS_ENABLED) {
+                assert markItemDirtyButton.getVisibility() == View.INVISIBLE : "ItemSelectedTopButtonListener -- Mark item dirty button invisible";
+                assert deleteTopButton.getVisibility() == View.INVISIBLE : "ItemSelectedTopButtonListener -- delete item button invisible";
+            }
         }
 
         @Override

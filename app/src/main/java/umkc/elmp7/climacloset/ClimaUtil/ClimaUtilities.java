@@ -28,6 +28,7 @@ import umkc.elmp7.climacloset.R;
  * Created by ericl on 2/29/2016.
  */
 public class ClimaUtilities {
+    public static boolean ASSERTIONS_ENABLED  = true;
     public static String temperature;
     private static Resources resources;
     public static byte[] getBytes(Bitmap bitmap) {

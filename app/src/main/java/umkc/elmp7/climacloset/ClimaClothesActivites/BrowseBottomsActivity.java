@@ -224,6 +224,10 @@ public class BrowseBottomsActivity extends AppCompatActivity {
                 loadPictures(filterSpinner.getSelectedItem().toString());
                 clearFields();
                 ClimaUtilities.SnackbarMessage(findViewById(android.R.id.content), "Item updated!");
+                if (ClimaUtilities.ASSERTIONS_ENABLED) {
+                    assert markDirtyButton.getVisibility() == View.INVISIBLE : "MarkDirtyBottomButtonListener -- Mark item dirty button invisible";
+                    assert deleteBottomButton.getVisibility() == View.INVISIBLE : "MarkDirtyBottomButtonListener -- delete item button invisible";
+                }
             }
             catch (UpdateException e)
             {
@@ -241,6 +245,10 @@ public class BrowseBottomsActivity extends AppCompatActivity {
                 loadPictures(filterSpinner.getSelectedItem().toString());
                 clearFields();
                 ClimaUtilities.SnackbarMessage(findViewById(android.R.id.content), "Item deleted successfully");
+                if (ClimaUtilities.ASSERTIONS_ENABLED) {
+                    assert markDirtyButton.getVisibility() == View.INVISIBLE : "DeleteBottomButtonListener -- Mark item dirty button invisible";
+                    assert deleteBottomButton.getVisibility() == View.INVISIBLE : "DeleteBottomButtonListener -- delete item button invisible";
+                }
             } catch (DeleteItemException e) {
                 ClimaUtilities.SnackbarMessage(findViewById(android.R.id.content), "Item not deleted successfully");
                 Log.d("DeleteItemException", e.getMessage());

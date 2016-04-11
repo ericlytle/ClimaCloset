@@ -42,11 +42,12 @@ public class BrowseTopsActivity extends AppCompatActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_browse_tops);
         //Set up the toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarTop);
         setSupportActionBar(toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(backButtonClickListener);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -80,7 +81,7 @@ public class BrowseTopsActivity extends AppCompatActivity {
         deleteTopButton.setOnClickListener(deleteTopButtonClickListener);
         markItemDirtyButton.setOnClickListener(markItemDirtyButtonClickListener);
         filterSpinner.setOnItemSelectedListener(itemSelectedListener);
-        toolbar.setNavigationOnClickListener(backButtonClickListener);
+
     }
 
     private void loadPictures(String availability){

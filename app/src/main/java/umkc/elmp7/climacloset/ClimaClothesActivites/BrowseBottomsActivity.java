@@ -19,9 +19,13 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetBottom;
 import umkc.elmp7.climacloset.ClimaDB.ClimaClosetDB;
 import umkc.elmp7.climacloset.ClimaUtil.ClimaUtilities;
+import umkc.elmp7.climacloset.ClimaUtil.DetailsLoader;
 import umkc.elmp7.climacloset.Exceptions.AvailabilityException;
 import umkc.elmp7.climacloset.Exceptions.DeleteItemException;
 import umkc.elmp7.climacloset.Exceptions.QueryException;
@@ -29,17 +33,16 @@ import umkc.elmp7.climacloset.Exceptions.UpdateException;
 import umkc.elmp7.climacloset.R;
 
 public class BrowseBottomsActivity extends AppCompatActivity {
-    private final String WHITESPACE = " ";
     private ClimaClosetDB DB;
     private TextView bottomTypeTextView, colorTextView, minTempTextView, maxTempTextView;
     private Button deleteBottomButton, markDirtyButton;
+    private Map<String, TextView> textViewMap;
     private Cursor cursor;
-    private ImageView imageView;
-    private ClimaClosetBottom tempBottom, temp;
     private LinearLayout linearLayout;
     private static ArrayAdapter<String> spinnerAdapter;
     private Spinner filterSpinner;
     public void onCreate(Bundle savedInstanceState) {
+        textViewMap = new HashMap<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_bottoms);
 
@@ -50,12 +53,11 @@ public class BrowseBottomsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        //Initialize textviews
-        bottomTypeTextView = (TextView) findViewById(R.id.bottomTypeTextView);
-        colorTextView = (TextView) findViewById(R.id.colorBottomTextView);
-        minTempTextView  = (TextView) findViewById(R.id.minTempBottomTextView);
-        maxTempTextView = (TextView) findViewById(R.id.maxTempBottomTextView);
-
+        //Initialize textviews into map
+        textViewMap.put(ClimaClosetDB.BOTTOMS_KEY_TYPE, (TextView)findViewById(R.id.bottomTypeTextView));
+        textViewMap.put(ClimaClosetDB.BOTTOMS_KEY_COLOR, (TextView)findViewById(R.id.colorBottomTextView));
+        textViewMap.put(ClimaClosetDB.BOTTOMS_KEY_MIN_TEMP, (TextView)findViewById(R.id.minTempBottomTextView));
+        textViewMap.put(ClimaClosetDB.BOTTOMS_KEY_MAX_TEMP, (TextView)findViewById(R.id.maxTempBottomTextView));
         //Initialize Buttons
         deleteBottomButton = (Button) findViewById(R.id.deleteBottomButton);
         markDirtyButton = (Button) findViewById(R.id.markDirtyBottomButton);
@@ -84,55 +86,18 @@ public class BrowseBottomsActivity extends AppCompatActivity {
     }
 
     private void loadPictures(String availability){
-
-        linearLayout.removeAllViews();
-
+        DetailsLoader detailsLoader;
+        //done in details loader? linearLayout.removeAllViews();
         try {
             cursor = DB.ClimaQueryBottom(Double.parseDouble(ClimaUtilities.temperature), availability);
+            detailsLoader = new DetailsLoader(cursor, linearLayout, deleteBottomButton, markDirtyButton, textViewMap, this);
+            detailsLoader.LoadPictures();
         }
         catch (QueryException e){
             Log.d("BrowseBottoms", e.getMessage());
         }
         catch (AvailabilityException e){
             Log.d("BrowseBottoms", e.getMessage());
-        }
-
-        //populate items into imageview from cursor object
-        while(cursor.moveToNext()){
-            tempBottom = new ClimaClosetBottom(ClimaUtilities.getCursorImage(cursor, DB.BOTTOMS_KEY_PICTURE),
-                    ClimaUtilities.getCursorString(cursor, DB.BOTTOMS_KEY_AVAILABILITY),
-                    ClimaUtilities.getCursorString(cursor, DB.BOTTOMS_KEY_COLOR),
-                    ClimaUtilities.getCursorString(cursor, DB.BOTTOMS_KEY_TYPE),
-                    ClimaUtilities.getCursorDouble(cursor, DB.BOTTOMS_KEY_MIN_TEMP),
-                    ClimaUtilities.getCursorDouble(cursor, DB.BOTTOMS_KEY_MAX_TEMP),
-                    ClimaUtilities.getCursorLong(cursor, DB.SHIRTS_KEY_ID));
-            imageView = new ImageView(this);
-            imageView.setImageBitmap(tempBottom.getPicture());
-            imageView.setMinimumHeight(getResources().getInteger(R.integer.image_height));
-            imageView.setMinimumWidth(getResources().getInteger(R.integer.image_width));
-            imageView.setTag(tempBottom);
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    temp = (ClimaClosetBottom) v.getTag();
-                    bottomTypeTextView.setText(getResources().getString(R.string.BROWSE_BOTTOMS_bottomTypeDisplay) + WHITESPACE + temp.getBottomType());
-                    colorTextView.setText(getResources().getString(R.string.BROWSE_BOTTOMS_colorDisplay) + WHITESPACE + temp.getColor());
-                    minTempTextView.setText(getResources().getString(R.string.BROWSE_BOTTOMS_minTempDisplay) + WHITESPACE + String.valueOf(temp.getMinTemp()));
-                    maxTempTextView.setText(getResources().getString(R.string.BROWSE_BOTTOMS_maxTempDisplay) + WHITESPACE + String.valueOf(temp.getMaxTemp()));
-                    Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.SNACKBAR_id_display) + WHITESPACE + String.valueOf(temp.getID()), Snackbar.LENGTH_LONG)
-                            .show();
-                    if (temp.getAvailability().equalsIgnoreCase("Avail")) {
-                        markDirtyButton.setText("Mark Dirty");
-                    }
-                    if (temp.getAvailability().equalsIgnoreCase("nAvail")) {
-                        markDirtyButton.setText("Mark Clean");
-                    }
-                    deleteBottomButton.setVisibility(View.VISIBLE);
-                    markDirtyButton.setVisibility(View.VISIBLE);
-                }
-            });
-
-            linearLayout.addView(imageView);
         }
 
         if (linearLayout.getChildCount() == 0) {
@@ -147,10 +112,10 @@ public class BrowseBottomsActivity extends AppCompatActivity {
     }
 
     private void clearFields(){
-        bottomTypeTextView.setText("");
-        colorTextView.setText("");
-        minTempTextView.setText("");
-        maxTempTextView.setText("");
+        textViewMap.get(ClimaClosetDB.BOTTOMS_KEY_TYPE).setText("");
+        textViewMap.get(ClimaClosetDB.BOTTOMS_KEY_COLOR).setText("");
+        textViewMap.get(ClimaClosetDB.BOTTOMS_KEY_MIN_TEMP).setText("");
+        textViewMap.get(ClimaClosetDB.BOTTOMS_KEY_MAX_TEMP).setText("");
         deleteBottomButton.setVisibility(View.INVISIBLE);
         markDirtyButton.setVisibility(View.INVISIBLE);
     }
@@ -208,19 +173,20 @@ public class BrowseBottomsActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
+            ClimaClosetBottom TB = (ClimaClosetBottom)v.getTag();
             try{
-                if (temp != null)
+                if (TB != null)
                 {
-                    switch (temp.getAvailability()){
+                    switch (TB.getAvailability()){
                         case ("Avail"):
-                            temp.updateAvailability("nAvail");
+                            TB.updateAvailability("nAvail");
                             break;
                         case ("nAvail"):
-                            temp.updateAvailability("Avail");
+                            TB.updateAvailability("Avail");
                             break;
                     }
                 }
-                DB.markBottomItemDirty(temp, DB.BOTTOMS_TABLE);
+                DB.markBottomItemDirty(TB, DB.BOTTOMS_TABLE);
                 loadPictures(filterSpinner.getSelectedItem().toString());
                 clearFields();
                 ClimaUtilities.SnackbarMessage(findViewById(android.R.id.content), "Item updated!");
@@ -241,7 +207,7 @@ public class BrowseBottomsActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             try {
-                DB.deleteItem(temp, DB.BOTTOMS_TABLE);
+                DB.deleteItem((ClimaClosetBottom)v.getTag(), DB.BOTTOMS_TABLE);
                 loadPictures(filterSpinner.getSelectedItem().toString());
                 clearFields();
                 ClimaUtilities.SnackbarMessage(findViewById(android.R.id.content), "Item deleted successfully");

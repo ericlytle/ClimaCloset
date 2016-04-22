@@ -29,6 +29,8 @@ import umkc.elmp7.climacloset.R;
  */
 public class ClimaUtilities {
     public static boolean ASSERTIONS_ENABLED  = true;
+    public static final String AVAILABLE_TAG = "Avail";
+    public static final String NOT_AVAILABLE_TAG = "nAvail";
     public static String temperature;
     private static Resources resources;
     public static byte[] getBytes(Bitmap bitmap) {

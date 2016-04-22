@@ -1,7 +1,6 @@
 package umkc.elmp7.climacloset.ClimaClothesActivites;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,13 +24,12 @@ import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetTop;
 import umkc.elmp7.climacloset.ClimaDB.ClimaClosetDB;
 import umkc.elmp7.climacloset.Exceptions.AddItemException;
 import umkc.elmp7.climacloset.R;
-import umkc.elmp7.climacloset.ClimaUtil.*;
 
 public class CatalogTopActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 1888;
     private EditText topTypeET, minTempET, maxTempET;
     private Spinner colorET, sleeveTypeET;
-    private Button photoButton, populate;
+    private Button photoButton;
     private ImageView photoPreview;
     private Bitmap photo;
     private ClimaClosetDB DB;
@@ -48,7 +46,8 @@ public class CatalogTopActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.drawable.climacloset);
+        getSupportActionBar().setIcon(R.drawable.climatoolbarsmall);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.backbutton);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +66,6 @@ public class CatalogTopActivity extends AppCompatActivity {
         this.topTypeET = (EditText) this.findViewById(R.id.topTypeTextField);
         this.minTempET = (EditText) this.findViewById(R.id.mintempTop);
         this.maxTempET = (EditText) this.findViewById(R.id.maxtempTop);
-        this.populate = (Button) this.findViewById(R.id.button);
 
         //to be removed
         Button submitButton = (Button) this.findViewById(R.id.submitTop);

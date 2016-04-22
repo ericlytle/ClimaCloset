@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         catalogbottomButton = (Button) findViewById(R.id.catalogBottomButton);
         Button browseTopsButton = (Button) findViewById(R.id.browseTopsButton);
         Button browseBottomButton = (Button) findViewById(R.id.browseBottomsButton);
+
         //EditText cityStateName = (EditText) findViewById(R.id.cityState);
         //cityStateName.setText(DEFAULTCITYNAME);
 
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 // TODO Auto-generated method stub
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
-                double speed = location.getSpeed(); //spedd in meter/minute
+                double speed = location.getSpeed(); //speed in meter/minute
                 speed = (speed*3600)/1000;      // speed in km/minute
                 try {
                     Geocoder gcd = new Geocoder(getApplicationContext(), Locale.getDefault());

@@ -1,47 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:background="@color/background"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".ClimaClothesActivites.MainActivity">
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Catalog Top"
-        android:id="@+id/catalogTopButton"
-        android:layout_centerHorizontal="true"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Catalog Bottom"
-        android:id="@+id/catalogBottomButton"
-        android:layout_below="@+id/catalogTopButton"
-        android:layout_centerHorizontal="true" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Browse Tops"
-        android:id="@+id/browseTopsButton"
-        android:layout_below="@+id/catalogBottomButton"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Browse Bottoms"
-        android:id="@+id/browseBottomsButton"
-        android:layout_below="@+id/browseTopsButton"
-        android:layout_centerHorizontal="true" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorAccent"
+        android:text="Todays Current Temperature:"
+        android:id="@+id/todayLabel"
+        android:layout_centerHorizontal="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorAccent"
         android:text=""
         android:id="@+id/temp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/browseBottomsButton"/>
+        android:layout_below="@+id/todayLabel"
+        android:layout_centerHorizontal="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/catalogTopButton"
+        android:background="@drawable/catalogshirtsicon"
+        android:layout_margin="15dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/catalogBottomButton"
+        android:background="@drawable/catalogbottomsicon"
+        android:layout_toRightOf="@+id/catalogTopButton"
+        android:layout_margin="15dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/browsetopsicon"
+        android:id="@+id/browseTopsButton"
+        android:layout_below="@+id/catalogBottomButton"
+        android:layout_margin="15dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/browsebottomsicon"
+        android:id="@+id/browseBottomsButton"
+        android:layout_toRightOf="@+id/browseTopsButton"
+        android:layout_below="@+id/catalogBottomButton"
+        android:layout_margin="15dp" />
+    </RelativeLayout>
+
 </RelativeLayout>

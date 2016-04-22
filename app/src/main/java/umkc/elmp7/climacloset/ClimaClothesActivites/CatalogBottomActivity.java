@@ -45,6 +45,8 @@ public class CatalogBottomActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.climatoolbarsmall);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.backbutton);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +83,7 @@ public class CatalogBottomActivity extends AppCompatActivity {
                             bottomTypeET.getText().toString(),
                             Double.parseDouble(minTempET.getText().toString()),
                             Double.parseDouble(maxTempET.getText().toString())));
-                        Snackbar.make(findViewById(android.R.id.content),
+                            Snackbar.make(findViewById(android.R.id.content),
                                 getResources().getString(R.string.Bottom_catalog_success),
                                 Snackbar.LENGTH_LONG)
                                 .show();

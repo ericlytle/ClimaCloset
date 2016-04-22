@@ -50,6 +50,9 @@ public class BrowseBottomsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(backButtonClickListener);
+        getSupportActionBar().setIcon(R.drawable.climatoolbarsmall);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.backbutton);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -72,7 +75,7 @@ public class BrowseBottomsActivity extends AppCompatActivity {
         linearLayout = (LinearLayout) findViewById(R.id.browseBottomLayout);
 
         //Build spinner and set selection to first item
-        buildSpinner();
+        ClimaUtilities.buildSpinner(filterSpinner, getApplicationContext());
         filterSpinner.setSelection(0);
         filterSpinner.setOnItemSelectedListener(itemSelectedListener);
 
@@ -120,40 +123,6 @@ public class BrowseBottomsActivity extends AppCompatActivity {
         markDirtyButton.setVisibility(View.INVISIBLE);
     }
 
-    void buildSpinner(){
-        String[] colorArray = getResources().getStringArray(R.array.clothingFilter);
-        spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, colorArray )
-        {
-            @Override
-            public View getView(int position, View convertView,ViewGroup parent) {
-
-                View v = super.getView(position, convertView, parent);
-
-                ((TextView) v).setGravity(Gravity.CENTER);
-                ((TextView) v).setTextColor(Color.BLACK);
-
-                return v;
-
-            }
-
-            @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                ((TextView ) view).setGravity(Gravity.CENTER);
-                ((TextView) view).setTextColor(Color.BLACK);
-                ((TextView) view).setTextSize(20);
-                if (position % 2 == 0) { // we're on an even row
-                    view.setBackgroundColor(Color.WHITE);
-                } else {
-                    view.setBackgroundColor(Color.LTGRAY);
-                }
-                return view;
-            }
-
-        };
-        filterSpinner.setAdapter(spinnerAdapter);
-    }
-
     private AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
 
         @Override
@@ -173,20 +142,20 @@ public class BrowseBottomsActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            ClimaClosetBottom TB = (ClimaClosetBottom)v.getTag();
+            ClimaClosetBottom bottomTag = (ClimaClosetBottom)v.getTag();
             try{
-                if (TB != null)
+                if (bottomTag != null)
                 {
-                    switch (TB.getAvailability()){
-                        case ("Avail"):
-                            TB.updateAvailability("nAvail");
+                    switch (bottomTag.getAvailability()){
+                        case (ClimaUtilities.AVAILABLE_TAG):
+                            bottomTag.updateAvailability(ClimaUtilities.NOT_AVAILABLE_TAG);
                             break;
-                        case ("nAvail"):
-                            TB.updateAvailability("Avail");
+                        case (ClimaUtilities.NOT_AVAILABLE_TAG):
+                            bottomTag.updateAvailability(ClimaUtilities.AVAILABLE_TAG);
                             break;
                     }
                 }
-                DB.markBottomItemDirty(TB, DB.BOTTOMS_TABLE);
+                DB.markBottomItemDirty(bottomTag, DB.BOTTOMS_TABLE);
                 loadPictures(filterSpinner.getSelectedItem().toString());
                 clearFields();
                 ClimaUtilities.SnackbarMessage(findViewById(android.R.id.content), "Item updated!");
@@ -206,8 +175,9 @@ public class BrowseBottomsActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
+            ClimaClosetBottom bottomTag = (ClimaClosetBottom) v.getTag();
             try {
-                DB.deleteItem((ClimaClosetBottom)v.getTag(), DB.BOTTOMS_TABLE);
+                DB.deleteItem(bottomTag, DB.BOTTOMS_TABLE);
                 loadPictures(filterSpinner.getSelectedItem().toString());
                 clearFields();
                 ClimaUtilities.SnackbarMessage(findViewById(android.R.id.content), "Item deleted successfully");

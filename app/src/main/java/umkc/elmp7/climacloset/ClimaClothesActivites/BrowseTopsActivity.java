@@ -21,6 +21,9 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetTop;
 import umkc.elmp7.climacloset.ClimaDB.ClimaClosetDB;
 import umkc.elmp7.climacloset.ClimaUtil.*;
@@ -39,8 +42,10 @@ public class BrowseTopsActivity extends AppCompatActivity {
     private ClimaClosetTop tempTop,temp;
     private LinearLayout linearLayout;
     private Spinner filterSpinner;
+    private Map<String, TextView> textViewMap;
 
     public void onCreate(Bundle savedInstanceState) {
+        textViewMap = new HashMap<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_tops);
         //Set up the toolbar
@@ -48,15 +53,17 @@ public class BrowseTopsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(backButtonClickListener);
+        getSupportActionBar().setIcon(R.drawable.climatoolbarsmall);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.backbutton);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         //initialize textviews
-        topTypeTextView = (TextView) findViewById(R.id.topTypeTextView);
-        sleeveTypeTextView = (TextView) findViewById(R.id.sleeveTypeTextView);
-        colorTextView = (TextView) findViewById(R.id.colorTextView);
-        minTempTextView  = (TextView) findViewById(R.id.minTempTextView);
-        maxTempTextView = (TextView) findViewById(R.id.maxTempTextView);
+        textViewMap.put(ClimaClosetDB.SHIRTS_KEY_TOP_TYPE, (TextView) findViewById(R.id.topTypeTextView));
+        textViewMap.put(ClimaClosetDB.SHIRTS_KEY_SLEEVE_TYPE, (TextView) findViewById(R.id.sleeveTypeTextView));
+        textViewMap.put(ClimaClosetDB.SHIRTS_KEY_COLOR, (TextView) findViewById(R.id.colorTextView));
+        textViewMap.put(ClimaClosetDB.SHIRTS_KEY_MIN_TEMP, (TextView) findViewById(R.id.minTempTextView));
+        textViewMap.put(ClimaClosetDB.SHIRTS_KEY_MAX_TEMP, (TextView) findViewById(R.id.maxTempTextView));
 
         //initialize buttons
         deleteTopButton = (Button) findViewById(R.id.deleteTopButton);
@@ -71,6 +78,7 @@ public class BrowseTopsActivity extends AppCompatActivity {
         filterSpinner = (Spinner) findViewById(R.id.filterClothingTopSpinner);
         //buildSpinner();
         ClimaUtilities.buildSpinner(filterSpinner, getApplicationContext());
+        filterSpinner.setSelection(0);
 
         //Initialize database
         DB = ClimaClosetDB.instance(getApplicationContext());
@@ -85,10 +93,13 @@ public class BrowseTopsActivity extends AppCompatActivity {
     }
 
     private void loadPictures(String availability){
+        DetailsLoader detailsLoader;
         //Run query on database
-        linearLayout.removeAllViews();
+        //done in details loader? linearLayout.removeAllViews();
         try {
             cursor = DB.ClimaQueryTop(Double.parseDouble(ClimaUtilities.temperature), availability);
+            detailsLoader = new DetailsLoader(cursor, linearLayout, deleteTopButton, markItemDirtyButton, textViewMap, this);
+            detailsLoader.LoadPictures();
         }
         catch(AvailabilityException e){
             Log.d("BrowseTops", e.getMessage());
@@ -96,52 +107,65 @@ public class BrowseTopsActivity extends AppCompatActivity {
         catch(QueryException e){
             Log.d("BrowseTops", e.getMessage());
         }
-        while(cursor.moveToNext()){
-            tempTop = new ClimaClosetTop(ClimaUtilities.getCursorImage(cursor, DB.SHIRTS_KEY_PICTURE),
-                    ClimaUtilities.getCursorString(cursor, DB.SHIRTS_KEY_AVAILABLE),
-                    ClimaUtilities.getCursorString(cursor, DB.SHIRTS_KEY_COLOR),
-                    ClimaUtilities.getCursorString(cursor, DB.SHIRTS_KEY_TOP_TYPE),
-                    ClimaUtilities.getCursorDouble(cursor, DB.SHIRTS_KEY_MIN_TEMP),
-                    ClimaUtilities.getCursorDouble(cursor, DB.SHIRTS_KEY_MAX_TEMP),
-                    ClimaUtilities.getCursorString(cursor, DB.SHIRTS_KEY_SLEEVE_TYPE),
-                    ClimaUtilities.getCursorLong(cursor, DB.SHIRTS_KEY_ID));
-
-            imageView = new ImageView(this);
-            imageView.setImageBitmap(tempTop.getPicture());
-            imageView.setMinimumHeight(getResources().getInteger(R.integer.image_height));
-            imageView.setMinimumWidth(getResources().getInteger(R.integer.image_width));
-            imageView.setTag(tempTop);
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    temp = (ClimaClosetTop) v.getTag();
-                    topTypeTextView.setText(getResources().getString(R.string.BROWSE_TOPS_topTypeDisplay) + WHITESPACE + temp.getTopType());
-                    sleeveTypeTextView.setText(getResources().getString(R.string.BROWSE_TOPS_sleeveTypeDisplay) + WHITESPACE + temp.getSleeveType());
-                    colorTextView.setText(getResources().getString(R.string.BROWSE_TOPS_colorDisplay) + WHITESPACE + temp.getColor());
-                    minTempTextView.setText(getResources().getString(R.string.BROWSE_TOPS_minTempDisplay) + WHITESPACE + String.valueOf(temp.getMinTemp()));
-                    maxTempTextView.setText(getResources().getString(R.string.BROWSE_TOPS_maxTempDisplay) + WHITESPACE + String.valueOf(temp.getMaxTemp()));
-                    Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.SNACKBAR_id_display) + WHITESPACE + String.valueOf(temp.getID()), Snackbar.LENGTH_LONG)
-                            .show();
-                    if (temp.getAvailability().equalsIgnoreCase("Avail")) {
-                        markItemDirtyButton.setText("Mark Dirty");
-                    }
-                    if (temp.getAvailability().equalsIgnoreCase("nAvail")) {
-                        markItemDirtyButton.setText("Mark Clean");
-                    }
-                    deleteTopButton.setVisibility(View.VISIBLE);
-                    markItemDirtyButton.setVisibility(View.VISIBLE);
-                }
-            });
-            linearLayout.addView(imageView);
+//        while(cursor.moveToNext()){
+//            tempTop = new ClimaClosetTop(ClimaUtilities.getCursorImage(cursor, DB.SHIRTS_KEY_PICTURE),
+//                    ClimaUtilities.getCursorString(cursor, DB.SHIRTS_KEY_AVAILABLE),
+//                    ClimaUtilities.getCursorString(cursor, DB.SHIRTS_KEY_COLOR),
+//                    ClimaUtilities.getCursorString(cursor, DB.SHIRTS_KEY_TOP_TYPE),
+//                    ClimaUtilities.getCursorDouble(cursor, DB.SHIRTS_KEY_MIN_TEMP),
+//                    ClimaUtilities.getCursorDouble(cursor, DB.SHIRTS_KEY_MAX_TEMP),
+//                    ClimaUtilities.getCursorString(cursor, DB.SHIRTS_KEY_SLEEVE_TYPE),
+//                    ClimaUtilities.getCursorLong(cursor, DB.SHIRTS_KEY_ID));
+//
+//            imageView = new ImageView(this);
+//            imageView.setImageBitmap(tempTop.getPicture());
+//            imageView.setMinimumHeight(getResources().getInteger(R.integer.image_height));
+//            imageView.setMinimumWidth(getResources().getInteger(R.integer.image_width));
+//            imageView.setTag(tempTop);
+//            imageView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    temp = (ClimaClosetTop) v.getTag();
+//                    topTypeTextView.setText(getResources().getString(R.string.BROWSE_TOPS_topTypeDisplay) + WHITESPACE + temp.getTopType());
+//                    sleeveTypeTextView.setText(getResources().getString(R.string.BROWSE_TOPS_sleeveTypeDisplay) + WHITESPACE + temp.getSleeveType());
+//                    colorTextView.setText(getResources().getString(R.string.BROWSE_TOPS_colorDisplay) + WHITESPACE + temp.getColor());
+//                    minTempTextView.setText(getResources().getString(R.string.BROWSE_TOPS_minTempDisplay) + WHITESPACE + String.valueOf(temp.getMinTemp()));
+//                    maxTempTextView.setText(getResources().getString(R.string.BROWSE_TOPS_maxTempDisplay) + WHITESPACE + String.valueOf(temp.getMaxTemp()));
+//                    Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.SNACKBAR_id_display) + WHITESPACE + String.valueOf(temp.getID()), Snackbar.LENGTH_LONG)
+//                            .show();
+//                    if (temp.getAvailability().equalsIgnoreCase("Avail")) {
+//                        markItemDirtyButton.setText("Mark Dirty");
+//                    }
+//                    if (temp.getAvailability().equalsIgnoreCase("nAvail")) {
+//                        markItemDirtyButton.setText("Mark Clean");
+//                    }
+//                    deleteTopButton.setVisibility(View.VISIBLE);
+//                    markItemDirtyButton.setVisibility(View.VISIBLE);
+//                }
+//            });
+//            linearLayout.addView(imageView);
+//        }
+        if (linearLayout.getChildCount() == 0) {
+            deleteTopButton.setVisibility(View.INVISIBLE);
+            markItemDirtyButton.setVisibility(View.INVISIBLE);
+        }
+        else {
+            deleteTopButton.setVisibility(View.VISIBLE);
+            markItemDirtyButton.setVisibility(View.VISIBLE);
         }
     }
 
     private void clearFields(){
-        topTypeTextView.setText("");
-        sleeveTypeTextView.setText("");
-        colorTextView.setText("");
-        minTempTextView.setText("");
-        maxTempTextView.setText("");
+//        topTypeTextView.setText("");
+//        sleeveTypeTextView.setText("");
+//        colorTextView.setText("");
+//        minTempTextView.setText("");
+//        maxTempTextView.setText("");
+        textViewMap.get(ClimaClosetDB.SHIRTS_KEY_TOP_TYPE).setText("");
+        textViewMap.get(ClimaClosetDB.SHIRTS_KEY_SLEEVE_TYPE).setText("");
+        textViewMap.get(ClimaClosetDB.SHIRTS_KEY_COLOR).setText("");
+        textViewMap.get(ClimaClosetDB.SHIRTS_KEY_MIN_TEMP).setText("");
+        textViewMap.get(ClimaClosetDB.SHIRTS_KEY_MAX_TEMP).setText("");
         deleteTopButton.setVisibility(View.INVISIBLE);
         markItemDirtyButton.setVisibility(View.INVISIBLE);
     }
@@ -150,8 +174,9 @@ public class BrowseTopsActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
+            ClimaClosetTop topTag = (ClimaClosetTop) v.getTag();
             try {
-                DB.deleteItem(temp, DB.SHIRTS_TABLE);
+                DB.deleteItem(topTag, DB.SHIRTS_TABLE);
                 loadPictures(filterSpinner.getSelectedItem().toString());
                 clearFields();
                 Snackbar.make(findViewById(android.R.id.content), "Item deleted successfully", Snackbar.LENGTH_LONG)
@@ -172,15 +197,16 @@ public class BrowseTopsActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
+            ClimaClosetTop topTag = (ClimaClosetTop) v.getTag();
             try{
-                if (temp != null)
+                if (topTag != null)
                 {
-                    switch (temp.getAvailability()){
-                        case ("Avail"):
-                            temp.updateAvailability("nAvail");
+                    switch (topTag.getAvailability()){
+                        case (ClimaUtilities.AVAILABLE_TAG):
+                            topTag.updateAvailability(ClimaUtilities.NOT_AVAILABLE_TAG);
                             break;
-                        case ("nAvail"):
-                            temp.updateAvailability("Avail");
+                        case (ClimaUtilities.NOT_AVAILABLE_TAG):
+                            topTag.updateAvailability(ClimaUtilities.AVAILABLE_TAG);
                             break;
                     }
                 }

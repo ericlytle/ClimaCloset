@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
             Assert.assertNotNull("Error: temperature is null", temperature);
 
             TextView tempDisp = (TextView) findViewById(R.id.temp);
-            tempDisp.setText(temperature);
+            tempDisp.setText(temperature + (char) 0x00B0 + "F" );
             //catalogbottomButton.setText(String.valueOf(lon));
             //updateUI(temperature);
         }

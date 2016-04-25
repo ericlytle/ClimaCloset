@@ -201,16 +201,16 @@ public class BrowseTopsActivity extends AppCompatActivity {
             try{
                 if (topTag != null)
                 {
-                    switch (topTag.getAvailability()){
-                        case (ClimaUtilities.AVAILABLE_TAG):
-                            topTag.updateAvailability(ClimaUtilities.NOT_AVAILABLE_TAG);
-                            break;
-                        case (ClimaUtilities.NOT_AVAILABLE_TAG):
-                            topTag.updateAvailability(ClimaUtilities.AVAILABLE_TAG);
-                            break;
-                    }
+//                    switch (topTag.getAvailability()){
+//                        case (ClimaUtilities.AVAILABLE_TAG):
+//                            topTag.updateAvailability(ClimaUtilities.NOT_AVAILABLE_TAG);
+//                            break;
+//                        case (ClimaUtilities.NOT_AVAILABLE_TAG):
+//                            topTag.updateAvailability(ClimaUtilities.AVAILABLE_TAG);
+//                            break;
+//                    }
                 }
-                DB.markTopItemDirty(temp, DB.SHIRTS_TABLE);
+                DB.markTopItemDirty(temp);
                 loadPictures(filterSpinner.getSelectedItem().toString());
                 clearFields();
                 ClimaUtilities.SnackbarMessage(findViewById(android.R.id.content), "Item updated!");

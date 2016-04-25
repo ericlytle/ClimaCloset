@@ -146,16 +146,16 @@ public class BrowseBottomsActivity extends AppCompatActivity {
             try{
                 if (bottomTag != null)
                 {
-                    switch (bottomTag.getAvailability()){
-                        case (ClimaUtilities.AVAILABLE_TAG):
-                            bottomTag.updateAvailability(ClimaUtilities.NOT_AVAILABLE_TAG);
-                            break;
-                        case (ClimaUtilities.NOT_AVAILABLE_TAG):
-                            bottomTag.updateAvailability(ClimaUtilities.AVAILABLE_TAG);
-                            break;
-                    }
+//                    switch (bottomTag.getAvailability()){
+//                        case (ClimaUtilities.AVAILABLE_TAG):
+//                            bottomTag.updateAvailability(ClimaUtilities.NOT_AVAILABLE_TAG);
+//                            break;
+//                        case (ClimaUtilities.NOT_AVAILABLE_TAG):
+//                            bottomTag.updateAvailability(ClimaUtilities.AVAILABLE_TAG);
+//                            break;
+//                    }
                 }
-                DB.markBottomItemDirty(bottomTag, DB.BOTTOMS_TABLE);
+                DB.markBottomItemDirty(bottomTag);
                 loadPictures(filterSpinner.getSelectedItem().toString());
                 clearFields();
                 ClimaUtilities.SnackbarMessage(findViewById(android.R.id.content), "Item updated!");

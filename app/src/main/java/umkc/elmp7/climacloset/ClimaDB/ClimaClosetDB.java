@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetBottom;
 import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetTop;
 import umkc.elmp7.climacloset.ClimaClothes.ClothingItem;
+import umkc.elmp7.climacloset.ClimaUtil.ClimaUtilities;
 import umkc.elmp7.climacloset.Exceptions.AddItemException;
 import umkc.elmp7.climacloset.Exceptions.AvailabilityException;
 import umkc.elmp7.climacloset.Exceptions.DeleteItemException;
@@ -138,11 +139,19 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
     }
 
     //   Throws - UpdateException if the item was not updated successfully
-    public boolean markBottomItemDirty(ClimaClosetBottom climaBottom, String table) throws UpdateException
+    public boolean markBottomItemDirty(ClimaClosetBottom climaBottom) throws UpdateException
     {
         long updates;
         SQLiteDatabase SQLDB = this.getWritableDatabase();
         ContentValues bottomValues = new ContentValues();
+        switch (climaBottom.getAvailability()){
+            case (ClimaUtilities.AVAILABLE_TAG):
+                climaBottom.updateAvailability(ClimaUtilities.NOT_AVAILABLE_TAG);
+                break;
+            case (ClimaUtilities.NOT_AVAILABLE_TAG):
+                climaBottom.updateAvailability(ClimaUtilities.AVAILABLE_TAG);
+                break;
+        }
         bottomValues.put(BOTTOMS_KEY_TYPE, climaBottom.getBottomType());
         bottomValues.put(BOTTOMS_KEY_PICTURE, getBytes(climaBottom.getPicture()));
         bottomValues.put(BOTTOMS_KEY_AVAILABILITY, climaBottom.getAvailability());
@@ -160,11 +169,19 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
     }
 
     //   Throws - UpdateException if the item was not updated successfully
-    public boolean markTopItemDirty(ClimaClosetTop climaTop, String table) throws UpdateException
+    public boolean markTopItemDirty(ClimaClosetTop climaTop) throws UpdateException
     {
         long updates;
         SQLiteDatabase SQLDB = this.getWritableDatabase();
         ContentValues topValues = new ContentValues();
+        switch (climaTop.getAvailability()){
+            case (ClimaUtilities.AVAILABLE_TAG):
+                climaTop.updateAvailability(ClimaUtilities.NOT_AVAILABLE_TAG);
+                break;
+            case (ClimaUtilities.NOT_AVAILABLE_TAG):
+                climaTop.updateAvailability(ClimaUtilities.AVAILABLE_TAG);
+                break;
+        }
         topValues.put(SHIRTS_KEY_SLEEVE_TYPE, climaTop.getSleeveType());
         topValues.put(SHIRTS_KEY_TOP_TYPE, climaTop.getTopType());
         topValues.put(SHIRTS_KEY_PICTURE, getBytes(climaTop.getPicture()));

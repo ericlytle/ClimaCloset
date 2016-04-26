@@ -18,6 +18,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Map;
 
 import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetTop;
 import umkc.elmp7.climacloset.ClimaClothes.ClothingItem;
@@ -58,10 +59,6 @@ public class ClimaUtilities {
 
     public static long getCursorLong(Cursor tCursor, String columnIdx){
         return tCursor.getLong(tCursor.getColumnIndex(columnIdx));
-    }
-
-    public static String getResourceString(int ID){
-        return resources.getString(ID);
     }
 
     public static String parseSpaces(String parseString){

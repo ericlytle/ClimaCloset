@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,16 +22,18 @@ import android.widget.TextView;
 import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetBottom;
 import umkc.elmp7.climacloset.ClimaDB.ClimaClosetDB;
 import umkc.elmp7.climacloset.Exceptions.AddItemException;
+import umkc.elmp7.climacloset.Listeners.TakePhotoButtonClickListener;
 import umkc.elmp7.climacloset.R;
 
 public class CatalogBottomActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 1888;
-    private EditText minTempET, maxTempET, bottomTypeET;
-    private Spinner colorET;
-    private Button photoButton, submitButton;
-    private ImageView photoPreview;
-    private Bitmap photo;
-    private ClimaClosetDB DB;
+    private EditText etMinTemp, etMaxTemp, etBottomType;
+    private Spinner colorSpinner;
+    private Button btnTakePhoto, btnSubmit;
+    private ImageView ivPhotoPreview;
+    private Bitmap photoDisplay;
+    private ClimaClosetDB climaClosetDB;
+
     private static ArrayAdapter<String> spinnerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,66 +59,59 @@ public class CatalogBottomActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         //Get various elements
-        this.photoPreview = (ImageView) this.findViewById(R.id.photoPreviewBottom);
-        this.photoButton = (Button) this.findViewById(R.id.photoBottomButton);
-        this.colorET = (Spinner) this.findViewById(R.id.colorBottomSpinner);
-        this.bottomTypeET = (EditText) this.findViewById(R.id.bottomTypeTextField);
-        this.minTempET = (EditText) this.findViewById(R.id.mintempBottom);
-        this.maxTempET = (EditText) this.findViewById(R.id.maxtempBottom);
-        this.submitButton = (Button) this.findViewById(R.id.submitBottom);
+        this.ivPhotoPreview = (ImageView) this.findViewById(R.id.photoPreviewBottom);
+        this.btnTakePhoto = (Button) this.findViewById(R.id.photoBottomButton);
+        this.colorSpinner = (Spinner) this.findViewById(R.id.colorBottomSpinner);
+        this.etBottomType = (EditText) this.findViewById(R.id.bottomTypeTextField);
+        this.etMinTemp = (EditText) this.findViewById(R.id.mintempBottom);
+        this.etMaxTemp = (EditText) this.findViewById(R.id.maxtempBottom);
+        this.btnSubmit = (Button) this.findViewById(R.id.submitBottom);
 
         //Initialize database
-        DB = ClimaClosetDB.instance(getApplicationContext());
+        climaClosetDB = ClimaClosetDB.instance(getApplicationContext());
 
         //Build color and sleeve type spinners
         buildSpinner();
 
         //LISTENERS SECTION
-        submitButton.setOnClickListener(new View.OnClickListener() {
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                        DB.addBottom(new ClimaClosetBottom(photo,
+                    climaClosetDB.addBottom(new ClimaClosetBottom(photoDisplay,
                             getResources().getString(R.string.DB_AVAIL),
-                            colorET.getSelectedItem().toString(),
-                            bottomTypeET.getText().toString(),
-                            Double.parseDouble(minTempET.getText().toString()),
-                            Double.parseDouble(maxTempET.getText().toString())));
+                            colorSpinner.getSelectedItem().toString(),
+                            etBottomType.getText().toString(),
+                            Double.parseDouble(etMinTemp.getText().toString()),
+                            Double.parseDouble(etMaxTemp.getText().toString())));
                             Snackbar.make(findViewById(android.R.id.content),
                                 getResources().getString(R.string.Bottom_catalog_success),
                                 Snackbar.LENGTH_LONG)
                                 .show();
-                        clearFields();
+                    clearFields();
                 } catch (AddItemException e) {
                     Log.d("AddItemException", e.getMessage());
                 }
             }
         });
 
-        photoButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-            }
-        });
+        btnTakePhoto.setOnClickListener(new TakePhotoButtonClickListener(this));
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            this.photo = (Bitmap) data.getExtras().get("data");
-            photoPreview.setImageBitmap(photo);
-            photoButton.setText(getResources().getString(R.string.retake_photo_button));
+            this.photoDisplay = (Bitmap) data.getExtras().get("data");
+            ivPhotoPreview.setImageBitmap(photoDisplay);
+            btnTakePhoto.setText(getResources().getString(R.string.retake_photo_button));
         }
     }
     public void clearFields(){
-        colorET.setSelection(0);
-        bottomTypeET.setText("");
-        minTempET.setText("");
-        maxTempET.setText("");
-        photoPreview.setImageBitmap(null);
-        photoButton.setText(getResources().getString(R.string.take_photo_button));
+        colorSpinner.setSelection(0);
+        etBottomType.setText("");
+        etMinTemp.setText("");
+        etMaxTemp.setText("");
+        ivPhotoPreview.setImageBitmap(null);
+        btnTakePhoto.setText(getResources().getString(R.string.take_photo_button));
     }
 
     void buildSpinner(){
@@ -151,6 +145,6 @@ public class CatalogBottomActivity extends AppCompatActivity {
             }
 
         };
-        colorET.setAdapter(spinnerAdapter);
+        colorSpinner.setAdapter(spinnerAdapter);
     }
 }

@@ -85,6 +85,14 @@ public class DetailsLoader {
             }
             linearLayout.addView(imageView);
         }
+        if (linearLayout.getChildCount() == 0) {
+            deleteButton.setVisibility(View.INVISIBLE);
+            dirtyButton.setVisibility(View.INVISIBLE);
+        }
+        else {
+            deleteButton.setVisibility(View.VISIBLE);
+            dirtyButton.setVisibility(View.VISIBLE);
+        }
     }
     private class topViewOnClickListener implements View.OnClickListener{
 

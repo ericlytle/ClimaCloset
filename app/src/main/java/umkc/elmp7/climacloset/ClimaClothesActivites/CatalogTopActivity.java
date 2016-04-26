@@ -23,16 +23,17 @@ import android.widget.TextView;
 import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetTop;
 import umkc.elmp7.climacloset.ClimaDB.ClimaClosetDB;
 import umkc.elmp7.climacloset.Exceptions.AddItemException;
+import umkc.elmp7.climacloset.Listeners.BackButtonClickListener;
 import umkc.elmp7.climacloset.R;
 
 public class CatalogTopActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 1888;
-    private EditText topTypeET, minTempET, maxTempET;
-    private Spinner colorET, sleeveTypeET;
-    private Button photoButton;
-    private ImageView photoPreview;
-    private Bitmap photo;
-    private ClimaClosetDB DB;
+    private EditText etTopType, etMinTemp, etMaxTemp;
+    private Spinner colorSpinner, sleeveTypeSpinner;
+    private Button btnTakePhoto, btnSubmit;
+    private ImageView ivPhotoPreview;
+    private Bitmap photoDisplay;
+    private ClimaClosetDB climaClosetDB;
     private static ArrayAdapter<String> spinnerAdapter;
 
     @Override
@@ -43,51 +44,45 @@ public class CatalogTopActivity extends AppCompatActivity {
         //Set up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.climatoolbarsmall);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.backbutton);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(new BackButtonClickListener(this));
 
         //Keep keyboard from auto appearing on activity launch
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         //Get various elements
-        this.photoPreview = (ImageView) this.findViewById(R.id.photoPreviewTop);
-        this.photoButton = (Button) this.findViewById(R.id.photoTopButton);
-        this.colorET = (Spinner) this.findViewById(R.id.colorTopTextField);
-        this.sleeveTypeET = (Spinner) this.findViewById(R.id.sleeveTypeSpinner);
-        this.topTypeET = (EditText) this.findViewById(R.id.topTypeTextField);
-        this.minTempET = (EditText) this.findViewById(R.id.mintempTop);
-        this.maxTempET = (EditText) this.findViewById(R.id.maxtempTop);
+        ivPhotoPreview = (ImageView) findViewById(R.id.photoPreviewTop);
+        btnTakePhoto = (Button) findViewById(R.id.photoTopButton);
+        colorSpinner = (Spinner) findViewById(R.id.colorTopTextField);
+        sleeveTypeSpinner = (Spinner) findViewById(R.id.sleeveTypeSpinner);
+        etTopType = (EditText) findViewById(R.id.topTypeTextField);
+        etMinTemp = (EditText) findViewById(R.id.mintempTop);
+        etMaxTemp = (EditText) findViewById(R.id.maxtempTop);
 
         //to be removed
-        Button submitButton = (Button) this.findViewById(R.id.submitTop);
+        btnSubmit = (Button) findViewById(R.id.submitTop);
 
         //Initialize database
-        DB = ClimaClosetDB.instance(getApplicationContext());
+        climaClosetDB = ClimaClosetDB.instance(getApplicationContext());
 
         //Build color and sleeve type spinners
         buildSpinner();
 
         //LISTENERS SECTION
-        submitButton.setOnClickListener(new View.OnClickListener() {
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    DB.addTop(new ClimaClosetTop(photo,
+                    climaClosetDB.addTop(new ClimaClosetTop(photoDisplay,
                             getResources().getString(R.string.DB_AVAIL),
-                            colorET.getSelectedItem().toString(),
-                            topTypeET.getText().toString(),
-                            Double.parseDouble(minTempET.getText().toString()),
-                            Double.parseDouble(maxTempET.getText().toString()),
-                            sleeveTypeET.getSelectedItem().toString()));
+                            colorSpinner.getSelectedItem().toString(),
+                            etTopType.getText().toString(),
+                            Double.parseDouble(etMinTemp.getText().toString()),
+                            Double.parseDouble(etMaxTemp.getText().toString()),
+                            sleeveTypeSpinner.getSelectedItem().toString()));
                     Snackbar.make(findViewById(android.R.id.content),
                             getResources().getString(R.string.Top_catalog_success),
                             Snackbar.LENGTH_LONG)
@@ -104,7 +99,7 @@ public class CatalogTopActivity extends AppCompatActivity {
             }
         });
 
-        photoButton.setOnClickListener(new View.OnClickListener() {
+        btnTakePhoto.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -116,19 +111,19 @@ public class CatalogTopActivity extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            this.photo = (Bitmap) data.getExtras().get("data");
-            photoPreview.setImageBitmap(photo);
-            photoButton.setText("Retake Photo");
+            photoDisplay = (Bitmap) data.getExtras().get("data");
+            ivPhotoPreview.setImageBitmap(photoDisplay);
+            btnTakePhoto.setText("Retake Photo");
         }
     }
     public void clearFields(){
-        colorET.setSelection(0);
-        topTypeET.setText("");
-        minTempET.setText("");
-        maxTempET.setText("");
-        sleeveTypeET.setSelection(0);
-        photoPreview.setImageBitmap(null);
-        photoButton.setText("Take Photo");
+        colorSpinner.setSelection(0);
+        etTopType.setText("");
+        etMinTemp.setText("");
+        etMaxTemp.setText("");
+        sleeveTypeSpinner.setSelection(0);
+        ivPhotoPreview.setImageBitmap(null);
+        btnTakePhoto.setText("Take Photo");
     }
     @Override
     public void onStart() {
@@ -172,7 +167,7 @@ public class CatalogTopActivity extends AppCompatActivity {
             }
 
         };
-        colorET.setAdapter(spinnerAdapter);
+        colorSpinner.setAdapter(spinnerAdapter);
         spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, sleeveArray )
         {
             @Override
@@ -202,6 +197,6 @@ public class CatalogTopActivity extends AppCompatActivity {
             }
 
         };
-        sleeveTypeET.setAdapter(spinnerAdapter);
+        sleeveTypeSpinner.setAdapter(spinnerAdapter);
     }
 }

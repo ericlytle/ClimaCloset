@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetBottom;
 import umkc.elmp7.climacloset.ClimaDB.ClimaClosetDB;
+import umkc.elmp7.climacloset.ClimaUtil.ClimaUtilities;
 import umkc.elmp7.climacloset.Exceptions.AddItemException;
 import umkc.elmp7.climacloset.Listeners.TakePhotoButtonClickListener;
 import umkc.elmp7.climacloset.R;
@@ -43,7 +44,6 @@ public class CatalogBottomActivity extends AppCompatActivity {
         //Set up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.climatoolbarsmall);
@@ -59,13 +59,13 @@ public class CatalogBottomActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         //Get various elements
-        this.ivPhotoPreview = (ImageView) this.findViewById(R.id.photoPreviewBottom);
-        this.btnTakePhoto = (Button) this.findViewById(R.id.photoBottomButton);
-        this.colorSpinner = (Spinner) this.findViewById(R.id.colorBottomSpinner);
-        this.etBottomType = (EditText) this.findViewById(R.id.bottomTypeTextField);
-        this.etMinTemp = (EditText) this.findViewById(R.id.mintempBottom);
-        this.etMaxTemp = (EditText) this.findViewById(R.id.maxtempBottom);
-        this.btnSubmit = (Button) this.findViewById(R.id.submitBottom);
+        ivPhotoPreview = (ImageView) findViewById(R.id.photoPreviewBottom);
+        btnTakePhoto = (Button) findViewById(R.id.photoBottomButton);
+        colorSpinner = (Spinner) findViewById(R.id.colorBottomSpinner);
+        etBottomType = (EditText) findViewById(R.id.bottomTypeTextField);
+        etMinTemp = (EditText) findViewById(R.id.mintempBottom);
+        etMaxTemp = (EditText) findViewById(R.id.maxtempBottom);
+        btnSubmit = (Button) findViewById(R.id.submitBottom);
 
         //Initialize database
         climaClosetDB = ClimaClosetDB.instance(getApplicationContext());
@@ -84,10 +84,8 @@ public class CatalogBottomActivity extends AppCompatActivity {
                             etBottomType.getText().toString(),
                             Double.parseDouble(etMinTemp.getText().toString()),
                             Double.parseDouble(etMaxTemp.getText().toString())));
-                            Snackbar.make(findViewById(android.R.id.content),
-                                getResources().getString(R.string.Bottom_catalog_success),
-                                Snackbar.LENGTH_LONG)
-                                .show();
+                    ClimaUtilities.SnackbarMessage(findViewById(android.R.id.content),
+                            getResources().getString(R.string.Bottom_catalog_success));
                     clearFields();
                 } catch (AddItemException e) {
                     Log.d("AddItemException", e.getMessage());
@@ -100,7 +98,7 @@ public class CatalogBottomActivity extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            this.photoDisplay = (Bitmap) data.getExtras().get("data");
+            photoDisplay = (Bitmap) data.getExtras().get("data");
             ivPhotoPreview.setImageBitmap(photoDisplay);
             btnTakePhoto.setText(getResources().getString(R.string.retake_photo_button));
         }

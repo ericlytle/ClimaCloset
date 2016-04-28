@@ -1,13 +1,11 @@
 package umkc.elmp7.climacloset.ClimaClothesActivites;
 
 import android.database.Cursor;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -26,7 +24,7 @@ import umkc.elmp7.climacloset.Exceptions.QueryException;
 import umkc.elmp7.climacloset.Listeners.BackButtonClickListener;
 import umkc.elmp7.climacloset.Listeners.DeleteItemButtonClickListener;
 import umkc.elmp7.climacloset.Listeners.FilterSpinnerItemSelectedListener;
-import umkc.elmp7.climacloset.Listeners.MarkItemDirtyButtonListener;
+import umkc.elmp7.climacloset.Listeners.MarkItemDirtyButtonClickListener;
 import umkc.elmp7.climacloset.R;
 public class BrowseTopsActivity extends AppCompatActivity implements Observer {
     private ClimaClosetDB climaClosetDB;
@@ -77,7 +75,7 @@ public class BrowseTopsActivity extends AppCompatActivity implements Observer {
         loadPictures(filterSpinner.getSelectedItem().toString());
 
         //Create Listeners
-        MarkItemDirtyButtonListener itemDirtyButtonListener = new MarkItemDirtyButtonListener(getApplicationContext());
+        MarkItemDirtyButtonClickListener itemDirtyButtonListener = new MarkItemDirtyButtonClickListener(getApplicationContext());
         DeleteItemButtonClickListener deleteItemButtonClickListener = new DeleteItemButtonClickListener(getApplicationContext(), climaClosetDB.SHIRTS_TABLE, findViewById(android.R.id.content), btnMarkItemDirty, btnDeleteTop);
         FilterSpinnerItemSelectedListener filterSpinnerItemSelectedListener = new FilterSpinnerItemSelectedListener();
 

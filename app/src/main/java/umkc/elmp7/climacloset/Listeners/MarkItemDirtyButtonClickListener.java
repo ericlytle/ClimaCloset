@@ -12,9 +12,9 @@ import umkc.elmp7.climacloset.Exceptions.UpdateException;
 /**
  * Created by Eric on 4/25/16.
  */
-public class MarkItemDirtyButtonListener extends Observable implements View.OnClickListener {
+public class MarkItemDirtyButtonClickListener extends Observable implements View.OnClickListener {
         ClimaClosetDB DB;
-        public MarkItemDirtyButtonListener(Context context) {
+        public MarkItemDirtyButtonClickListener(Context context) {
             DB = ClimaClosetDB.instance(context);
         }
         @Override

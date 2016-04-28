@@ -73,6 +73,13 @@
             android:id="@+id/deleteBottomButton"
             android:layout_below="@+id/markDirty"
             android:layout_gravity="center_horizontal" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send"
+            android:id="@+id/bottomSendSmsButton"
+            android:layout_below="@+id/deleteBottomButton"
+            android:layout_gravity="center_horizontal" />
 
 
     </LinearLayout>

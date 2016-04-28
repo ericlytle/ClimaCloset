@@ -24,7 +24,7 @@ import umkc.elmp7.climacloset.R;
 public class DetailsLoader {
     private Cursor cursor;
     private LinearLayout linearLayout;
-    private Button deleteButton, dirtyButton;
+    private Button deleteButton, dirtyButton, smsButton;
     private ImageView imageView;
     private Map<String, TextView> textViewMap;
     private Activity activity;
@@ -33,12 +33,13 @@ public class DetailsLoader {
     private static final int BOTTOM_INDICATOR = 2;
     private static final String WHITESPACE = " ";
 
-    public DetailsLoader(Cursor cursor, LinearLayout linearLayout, Button deleteButton, Button dirtyButton,
+    public DetailsLoader(Cursor cursor, LinearLayout linearLayout, Button deleteButton, Button dirtyButton, Button smsButton,
                          Map textViewMap, Activity activity){
         this.cursor = cursor;
         this.linearLayout = linearLayout;
         this.deleteButton = deleteButton;
         this.dirtyButton = dirtyButton;
+        this.smsButton = smsButton;
         this.textViewMap = textViewMap;
         this.activity = activity;
         if (textViewMap.containsKey(ClimaClosetDB.SHIRTS_KEY_SLEEVE_TYPE))
@@ -88,10 +89,12 @@ public class DetailsLoader {
         if (linearLayout.getChildCount() == 0) {
             deleteButton.setVisibility(View.INVISIBLE);
             dirtyButton.setVisibility(View.INVISIBLE);
+            smsButton.setVisibility(View.INVISIBLE);
         }
         else {
             deleteButton.setVisibility(View.VISIBLE);
             dirtyButton.setVisibility(View.VISIBLE);
+            smsButton.setVisibility(View.VISIBLE);
         }
     }
     private class topViewOnClickListener implements View.OnClickListener{
@@ -127,8 +130,10 @@ public class DetailsLoader {
             }
             deleteButton.setTag(topTag);//important to be able to get later
             dirtyButton.setTag(topTag);
+            smsButton.setTag(topTag);
             deleteButton.setVisibility(View.VISIBLE);
             dirtyButton.setVisibility(View.VISIBLE);
+            smsButton.setVisibility(View.VISIBLE);
         }
     }
     private class bottomViewOnClickListener implements View.OnClickListener{
@@ -161,8 +166,10 @@ public class DetailsLoader {
             }
             deleteButton.setTag(bottomTag);//important to be able to get later
             dirtyButton.setTag(bottomTag);
+            smsButton.setTag(bottomTag);
             deleteButton.setVisibility(View.VISIBLE);
             dirtyButton.setVisibility(View.VISIBLE);
+            smsButton.setVisibility(View.VISIBLE);
         }
     }
 }

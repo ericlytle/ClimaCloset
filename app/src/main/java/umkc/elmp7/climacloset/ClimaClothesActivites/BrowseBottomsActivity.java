@@ -25,11 +25,12 @@ import umkc.elmp7.climacloset.Listeners.BackButtonClickListener;
 import umkc.elmp7.climacloset.Listeners.DeleteItemButtonClickListener;
 import umkc.elmp7.climacloset.Listeners.FilterSpinnerItemSelectedListener;
 import umkc.elmp7.climacloset.Listeners.MarkItemDirtyButtonClickListener;
+import umkc.elmp7.climacloset.Listeners.SmsSendButtonClickListener;
 import umkc.elmp7.climacloset.R;
 
 public class BrowseBottomsActivity extends AppCompatActivity implements Observer {
     private ClimaClosetDB climaClosetDB;
-    private Button btnDeleteBottom, btnMarkDirty;
+    private Button btnDeleteBottom, btnMarkDirty, btnSendSms;
     private Map<String, TextView> textViewMap;
     private Cursor cursor;
     private LinearLayout linearLayout;
@@ -57,8 +58,10 @@ public class BrowseBottomsActivity extends AppCompatActivity implements Observer
         //Initialize Buttons
         btnDeleteBottom = (Button) findViewById(R.id.deleteBottomButton);
         btnMarkDirty = (Button) findViewById(R.id.markDirtyBottomButton);
+        btnSendSms = (Button) findViewById(R.id.bottomSendSmsButton);
         btnDeleteBottom.setVisibility(View.INVISIBLE);
         btnMarkDirty.setVisibility(View.INVISIBLE);
+        btnSendSms.setVisibility(View.INVISIBLE);
 
         //Initialize linear layout
         linearLayout = (LinearLayout) findViewById(R.id.browseBottomLayout);
@@ -89,6 +92,7 @@ public class BrowseBottomsActivity extends AppCompatActivity implements Observer
         btnDeleteBottom.setOnClickListener(deleteItemButtonClickListener);
         btnMarkDirty.setOnClickListener(itemDirtyButtonListener);
         filterSpinner.setOnItemSelectedListener(filterSpinnerItemSelectedListener);
+        btnSendSms.setOnClickListener(new SmsSendButtonClickListener(this));
     }
 
     private void loadPictures(String availability){
@@ -96,7 +100,7 @@ public class BrowseBottomsActivity extends AppCompatActivity implements Observer
 
         try {
             cursor = climaClosetDB.ClimaQueryBottom(Double.parseDouble(ClimaUtilities.temperature), availability);
-            detailsLoader = new DetailsLoader(cursor, linearLayout, btnDeleteBottom, btnMarkDirty, textViewMap, this);
+            detailsLoader = new DetailsLoader(cursor, linearLayout, btnDeleteBottom, btnMarkDirty, btnSendSms, textViewMap, this);
             detailsLoader.LoadPictures();
         }
         catch (QueryException e){
@@ -114,6 +118,7 @@ public class BrowseBottomsActivity extends AppCompatActivity implements Observer
         textViewMap.get(ClimaClosetDB.BOTTOMS_KEY_MAX_TEMP).setText("");
         btnDeleteBottom.setVisibility(View.INVISIBLE);
         btnMarkDirty.setVisibility(View.INVISIBLE);
+        btnSendSms.setVisibility(View.INVISIBLE);
     }
 
     @Override

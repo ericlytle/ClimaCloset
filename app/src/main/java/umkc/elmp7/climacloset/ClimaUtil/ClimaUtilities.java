@@ -32,8 +32,8 @@ public class ClimaUtilities {
     public static boolean ASSERTIONS_ENABLED  = true;
     public static final String AVAILABLE_TAG = "Avail";
     public static final String NOT_AVAILABLE_TAG = "nAvail";
-    public static String temperature;
-    private static Resources resources;
+    public static String temperature = "NOT SET";
+    public static final double NO_TEMP_SET = -5000;
     public static byte[] getBytes(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);

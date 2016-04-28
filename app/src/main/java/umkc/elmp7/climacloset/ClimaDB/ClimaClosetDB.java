@@ -106,18 +106,26 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
     //          - QueryException if the query returns zero results
     public Cursor ClimaQueryTop(double currentTemp, String availability) throws AvailabilityException, QueryException{
         SQLiteDatabase SQLDB = this.getWritableDatabase();
-        String whereClause;
-        switch (availability){
+        String whereClause = null;
+        switch (availability) {
             case ("All"):
-                whereClause = currentTemp + "<" +  SHIRTS_KEY_MAX_TEMP + "  and " + currentTemp + ">" +  SHIRTS_KEY_MIN_TEMP;
+                if (currentTemp != ClimaUtilities.NO_TEMP_SET) {
+                    whereClause = currentTemp + "<" + SHIRTS_KEY_MAX_TEMP + "  and " + currentTemp + ">" + SHIRTS_KEY_MIN_TEMP;
+                }
                 break;
             case ("Clean"):
-                whereClause = currentTemp + "<" +  SHIRTS_KEY_MAX_TEMP + "  and " + currentTemp + ">" +  SHIRTS_KEY_MIN_TEMP
-                        + " and 'Avail' = " +  SHIRTS_KEY_AVAILABLE;
+                if (currentTemp != ClimaUtilities.NO_TEMP_SET) {
+                    whereClause = currentTemp + "<" + SHIRTS_KEY_MAX_TEMP + "  and " + currentTemp + ">" + SHIRTS_KEY_MIN_TEMP
+                            + " and ";
+                }
+                whereClause += "'Avail' = " + SHIRTS_KEY_AVAILABLE;
                 break;
             case ("Dirty"):
-                whereClause = currentTemp + "<" + SHIRTS_KEY_MAX_TEMP + "  and " + currentTemp + ">" + SHIRTS_KEY_MIN_TEMP
-                        + " and 'nAvail' = " + SHIRTS_KEY_AVAILABLE;
+                if (currentTemp != ClimaUtilities.NO_TEMP_SET){
+                    whereClause = currentTemp + "<" + SHIRTS_KEY_MAX_TEMP + "  and " + currentTemp + ">" + SHIRTS_KEY_MIN_TEMP
+                            + " and ";
+                }
+                whereClause += "'nAvail' = " + SHIRTS_KEY_AVAILABLE;
                 break;
             default:
                 AvailabilityException exception = new AvailabilityException(availability);
@@ -203,18 +211,26 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
     //          - QueryException if the query returns zero results
     public Cursor ClimaQueryBottom(double currentTemp, String availability) throws QueryException, AvailabilityException{
         SQLiteDatabase SQLDB = this.getWritableDatabase();
-        String where;
+        String where = null;
         switch (availability){
             case ("All"):
-                where = currentTemp + "<" + "b." + BOTTOMS_KEY_MAX_TEMP + "  and " + currentTemp + ">" + "b." + BOTTOMS_KEY_MIN_TEMP;
+                if (currentTemp != ClimaUtilities.NO_TEMP_SET) {
+                    where = currentTemp + "<" + "b." + BOTTOMS_KEY_MAX_TEMP + "  and " + currentTemp + ">" + "b." + BOTTOMS_KEY_MIN_TEMP;
+                }
                 break;
             case ("Clean"):
-                where = currentTemp + "<" + "b." + BOTTOMS_KEY_MAX_TEMP + "  and " + currentTemp + ">" + "b." + BOTTOMS_KEY_MIN_TEMP
-                        + " and 'Avail' = " + "b." + BOTTOMS_KEY_AVAILABILITY;
+                if (currentTemp != ClimaUtilities.NO_TEMP_SET) {
+                    where = currentTemp + "<" + "b." + BOTTOMS_KEY_MAX_TEMP + "  and " + currentTemp + ">" + "b." + BOTTOMS_KEY_MIN_TEMP
+                            + " and ";
+                }
+                where += "'Avail' = " + "b." + BOTTOMS_KEY_AVAILABILITY;
                 break;
             case ("Dirty"):
-                where = currentTemp + "<" + "b." + BOTTOMS_KEY_MAX_TEMP + "  and " + currentTemp + ">" + "b." + BOTTOMS_KEY_MIN_TEMP
-                    + " and 'nAvail' = " + "b." + BOTTOMS_KEY_AVAILABILITY;
+                if (currentTemp != ClimaUtilities.NO_TEMP_SET) {
+                    where = currentTemp + "<" + "b." + BOTTOMS_KEY_MAX_TEMP + "  and " + currentTemp + ">" + "b." + BOTTOMS_KEY_MIN_TEMP
+                            + " and 'nAvail' = " + "b." + BOTTOMS_KEY_AVAILABILITY;
+                }
+                where += "'nAvail' = " + "b." + BOTTOMS_KEY_AVAILABILITY;
                 break;
             default:
                 AvailabilityException exception = new AvailabilityException(availability);

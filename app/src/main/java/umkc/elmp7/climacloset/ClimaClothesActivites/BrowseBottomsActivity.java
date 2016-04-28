@@ -99,7 +99,12 @@ public class BrowseBottomsActivity extends AppCompatActivity implements Observer
         DetailsLoader detailsLoader;
 
         try {
-            cursor = climaClosetDB.ClimaQueryBottom(Double.parseDouble(ClimaUtilities.temperature), availability);
+            if (ClimaUtilities.temperature != "NOT SET") {
+                cursor = climaClosetDB.ClimaQueryBottom(Double.parseDouble(ClimaUtilities.temperature), availability);
+            }
+            else{
+                cursor = climaClosetDB.ClimaQueryBottom(ClimaUtilities.NO_TEMP_SET, availability);
+            }
             detailsLoader = new DetailsLoader(cursor, linearLayout, btnDeleteBottom, btnMarkDirty, btnSendSms, textViewMap, this);
             detailsLoader.LoadPictures();
         }

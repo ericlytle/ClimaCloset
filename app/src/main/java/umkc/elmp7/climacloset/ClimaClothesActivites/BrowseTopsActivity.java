@@ -99,7 +99,13 @@ public class BrowseTopsActivity extends AppCompatActivity implements Observer {
         DetailsLoader detailsLoader;
         //Run query on database
         try {
-            cursor = climaClosetDB.ClimaQueryTop(Double.parseDouble(ClimaUtilities.temperature), availability);
+            if (ClimaUtilities.temperature != "NOT SET") {
+                cursor = climaClosetDB.ClimaQueryTop(Double.parseDouble(ClimaUtilities.temperature), availability);
+            }
+            else
+            {
+                cursor = climaClosetDB.ClimaQueryTop(ClimaUtilities.NO_TEMP_SET, availability);
+            }
             detailsLoader = new DetailsLoader(cursor, linearLayout, btnDeleteTop, btnMarkItemDirty, btnSendSms, textViewMap, this);
             detailsLoader.LoadPictures();
         }

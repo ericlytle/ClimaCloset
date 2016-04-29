@@ -5,5 +5,8 @@
     <dimen name="fab_margin">16dp</dimen>
     <integer name="image_height">500</integer>
     <integer name="image_width">500</integer>
+    <dimen name="component_width">200dp</dimen>
+    <dimen name="photo_preview_height">200dp</dimen>
+    <dimen name="photo_preview_width">200dp</dimen>
 
 </resources>

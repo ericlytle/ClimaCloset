@@ -14,11 +14,11 @@
     <string name="DB_NOT_AVAIL">nAvail</string>
     <string name="Bottom_catalog_success">Bottom Catalogged Successfully!</string>
     <string name="Bottom_catalog_failure">Bottom Catalog Failed!</string>
-    <string name="Top_catalog_success">Top Catalogged Successfully!</string>
+    <string name="Top_catalog_success">Top Cataloged Successfully!</string>
     <string name="Top_catalog_failure">Top Catalog Failed!</string>
     <string-array name="sleeve_array">
         <item>Short Sleeve</item>
-        <item>3/4 Sleeve</item>
+        <item>&#190; Sleeve</item>
         <item>Long Sleeve</item>
     </string-array>
     <string-array name="clothingFilter">
@@ -47,4 +47,10 @@
     <string name="CATALOG_BOTTOMS_bottomTypeDisplay">Bottom Type </string>
     <string name="CATALOG_BOTTOMS_minTempDisplay">Min Temp </string>
     <string name="CATALOG_BOTTOMS_maxTempDisplay">Max Temp </string>
+    <string name="hint_top_type">Top Type</string>
+    <string name="hint_min_temp">Min Temp</string>
+    <string name="hint_max_temp">Max Temp</string>
+    <string name="mark_dirty">Mark Dirty</string>
+    <string name="delete_item">Delete Item</string>
+    <string name="send">Send</string>
 </resources>

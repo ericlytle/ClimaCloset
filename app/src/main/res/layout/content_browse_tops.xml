@@ -12,6 +12,7 @@
 
         <HorizontalScrollView android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+
 >
             <LinearLayout android:id="@+id/browseTopsLayout" android:layout_width="fill_parent"
                 android:layout_height="wrap_content" android:padding="5dp"
@@ -22,73 +23,69 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-
             android:id="@+id/topTypeTextView"
-            android:layout_gravity="center_horizontal" />
-        <!--android:text="@string/BROWSE_TOPS_topTypeDisplay"-->
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/browse_textdisplay"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-
             android:id="@+id/sleeveTypeTextView"
-            android:layout_gravity="center_horizontal" />
-        <!--android:text="@string/BROWSE_TOPS_sleeveTypeDisplay"-->
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/browse_textdisplay"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-
             android:id="@+id/colorTextView"
-            android:layout_gravity="center_horizontal" />
-        <!--android:text="@string/BROWSE_TOPS_colorDisplay"-->
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/browse_textdisplay"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-
             android:id="@+id/minTempTextView"
-            android:layout_gravity="center_horizontal" />
-        <!--android:text="@string/BROWSE_TOPS_minTempDisplay"-->
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/browse_textdisplay"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-
             android:id="@+id/maxTempTextView"
             android:layout_gravity="center_horizontal"
-            />
-        <!--android:text="@string/BROWSE_TOPS_maxTempDisplay"-->
+            android:textColor="@color/browse_textdisplay"/>
         <Spinner
-            android:layout_width="200dp"
+            android:layout_width="@dimen/component_width"
             android:layout_height="wrap_content"
             android:id="@+id/filterClothingTopSpinner"
             android:gravity="center"
-            android:layout_below="@+id/maxTempTextView"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"/>
         <Button
-            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_width="@dimen/component_width"
             android:layout_height="wrap_content"
-            android:text="Mark Dirty"
+            android:text="@string/mark_dirty"
             android:id="@+id/topMarkDirtyButton"
-            android:layout_below="@+id/filterClothingTopSpinner"
-            android:layout_gravity="center_horizontal" />
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/rounded_button"/>
         <Button
-            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_width="@dimen/component_width"
             android:layout_height="wrap_content"
-            android:text="Delete Item"
+            android:text="@string/delete_item"
             android:id="@+id/deleteTopButton"
-            android:layout_below="@+id/topMarkDirtyButton"
-            android:layout_gravity="center_horizontal" />
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/rounded_button"/>
         <Button
-            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_width="@dimen/component_width"
             android:layout_height="wrap_content"
-            android:text="Send"
+            android:text="@string/send"
             android:id="@+id/topSendSmsButton"
-            android:layout_below="@+id/deleteTopButton"
-            android:layout_gravity="center_horizontal" />
-
-
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:background="@drawable/rounded_button"/>
     </LinearLayout>
 </ScrollView>

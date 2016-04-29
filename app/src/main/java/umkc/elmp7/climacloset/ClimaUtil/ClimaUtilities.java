@@ -1,5 +1,6 @@
 package umkc.elmp7.climacloset.ClimaUtil;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -7,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,5 +107,13 @@ public class ClimaUtilities {
 
         };
         spinner.setAdapter(spinnerAdapter);
+    }
+    public static void AlertMessage(Activity activity, String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("Okay", null);
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

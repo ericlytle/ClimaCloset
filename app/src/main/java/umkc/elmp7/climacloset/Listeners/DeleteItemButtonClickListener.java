@@ -33,7 +33,7 @@ public class DeleteItemButtonClickListener extends Observable implements View.On
     }
     @Override
     public void onClick(View view) {
-        ClothingItem itemTag = (ClimaClosetTop) view.getTag();
+        ClothingItem itemTag = (ClothingItem) view.getTag();
         try {
             climaClosetDB.deleteItem(itemTag, itemTable);
 

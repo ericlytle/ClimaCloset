@@ -6,4 +6,6 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#3fe1a6</color>
     <color name="background">#404040</color>
+    <color name="catalog_textview_text">#ffffff</color>
+    <color name="browse_textdisplay">#ffffff</color>
 </resources>

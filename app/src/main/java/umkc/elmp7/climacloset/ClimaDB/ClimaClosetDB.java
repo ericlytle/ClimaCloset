@@ -106,7 +106,7 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
     //          - QueryException if the query returns zero results
     public Cursor ClimaQueryTop(double currentTemp, String availability) throws AvailabilityException, QueryException{
         SQLiteDatabase SQLDB = this.getWritableDatabase();
-        String whereClause = null;
+        String whereClause = "";
         switch (availability) {
             case ("All"):
                 if (currentTemp != ClimaUtilities.NO_TEMP_SET) {
@@ -211,7 +211,7 @@ public class ClimaClosetDB extends SQLiteOpenHelper {
     //          - QueryException if the query returns zero results
     public Cursor ClimaQueryBottom(double currentTemp, String availability) throws QueryException, AvailabilityException{
         SQLiteDatabase SQLDB = this.getWritableDatabase();
-        String where = null;
+        String where = "";
         switch (availability){
             case ("All"):
                 if (currentTemp != ClimaUtilities.NO_TEMP_SET) {

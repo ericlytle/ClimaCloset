@@ -1,5 +1,6 @@
 package umkc.elmp7.climacloset.ClimaClothesActivites;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -18,10 +19,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetTop;
 import umkc.elmp7.climacloset.ClimaDB.ClimaClosetDB;
+import umkc.elmp7.climacloset.ClimaUtil.ClimaUtilities;
 import umkc.elmp7.climacloset.Exceptions.AddItemException;
 import umkc.elmp7.climacloset.Listeners.BackButtonClickListener;
 import umkc.elmp7.climacloset.R;
@@ -34,13 +37,13 @@ public class CatalogTopActivity extends AppCompatActivity {
     private ImageView ivPhotoPreview;
     private Bitmap photoDisplay;
     private ClimaClosetDB climaClosetDB;
-    private static ArrayAdapter<String> spinnerAdapter;
+    private Activity myActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog_top);
-
+        myActivity = this;
         //Set up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -96,6 +99,10 @@ public class CatalogTopActivity extends AppCompatActivity {
                             Snackbar.LENGTH_LONG)
                             .show();
                 }
+                catch (Exception e){
+                    ClimaUtilities.AlertMessage(myActivity, "Something went wrong!\n" +
+                            "Check to make sure all fields are populated!");
+                }
             }
         });
 
@@ -113,7 +120,7 @@ public class CatalogTopActivity extends AppCompatActivity {
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             photoDisplay = (Bitmap) data.getExtras().get("data");
             ivPhotoPreview.setImageBitmap(photoDisplay);
-            btnTakePhoto.setText("Retake Photo");
+            btnTakePhoto.setText(getResources().getString(R.string.retake_photo_button));
         }
     }
     public void clearFields(){
@@ -123,7 +130,7 @@ public class CatalogTopActivity extends AppCompatActivity {
         etMaxTemp.setText("");
         sleeveTypeSpinner.setSelection(0);
         ivPhotoPreview.setImageBitmap(null);
-        btnTakePhoto.setText("Take Photo");
+        btnTakePhoto.setText(getResources().getString(R.string.take_photo_button));
     }
     @Override
     public void onStart() {
@@ -138,7 +145,7 @@ public class CatalogTopActivity extends AppCompatActivity {
     void buildSpinner(){
         String[] colorArray = getResources().getStringArray(R.array.color_array);
         String[] sleeveArray = getResources().getStringArray(R.array.sleeve_array);
-        spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, colorArray )
+        SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, colorArray )
         {
             @Override
             public View getView(int position, View convertView,ViewGroup parent) {
@@ -146,7 +153,7 @@ public class CatalogTopActivity extends AppCompatActivity {
                 View v = super.getView(position, convertView, parent);
 
                 ((TextView) v).setGravity(Gravity.CENTER);
-                ((TextView) v).setTextColor(Color.BLACK);
+                ((TextView) v).setTextColor(Color.WHITE);
 
                 return v;
 
@@ -176,7 +183,7 @@ public class CatalogTopActivity extends AppCompatActivity {
                 View v = super.getView(position, convertView, parent);
 
                 ((TextView) v).setGravity(Gravity.CENTER);
-                ((TextView) v).setTextColor(Color.BLACK);
+                ((TextView) v).setTextColor(Color.WHITE);
 
                 return v;
 

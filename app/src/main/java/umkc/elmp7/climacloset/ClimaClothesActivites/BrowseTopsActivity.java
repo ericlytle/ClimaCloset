@@ -29,7 +29,6 @@ import umkc.elmp7.climacloset.Listeners.SmsSendButtonClickListener;
 import umkc.elmp7.climacloset.R;
 public class BrowseTopsActivity extends AppCompatActivity implements Observer {
     private ClimaClosetDB climaClosetDB;
-    private Cursor cursor;
     private Button btnDeleteTop, btnMarkItemDirty, btnSendSms;
     private LinearLayout linearLayout;
     private Spinner filterSpinner;
@@ -78,8 +77,8 @@ public class BrowseTopsActivity extends AppCompatActivity implements Observer {
         loadPictures(filterSpinner.getSelectedItem().toString());
 
         //Create Listeners
-        MarkItemDirtyButtonClickListener itemDirtyButtonListener = new MarkItemDirtyButtonClickListener(getApplicationContext());
-        DeleteItemButtonClickListener deleteItemButtonClickListener = new DeleteItemButtonClickListener(getApplicationContext(), climaClosetDB.SHIRTS_TABLE, findViewById(android.R.id.content), btnMarkItemDirty, btnDeleteTop);
+        MarkItemDirtyButtonClickListener itemDirtyButtonListener = new MarkItemDirtyButtonClickListener(getApplicationContext(), ClimaClosetDB.SHIRTS_TABLE);
+        DeleteItemButtonClickListener deleteItemButtonClickListener = new DeleteItemButtonClickListener(getApplicationContext(), ClimaClosetDB.SHIRTS_TABLE, findViewById(android.R.id.content), btnMarkItemDirty, btnDeleteTop);
         FilterSpinnerItemSelectedListener filterSpinnerItemSelectedListener = new FilterSpinnerItemSelectedListener();
 
         //Initialize Observer's
@@ -97,9 +96,10 @@ public class BrowseTopsActivity extends AppCompatActivity implements Observer {
 
     private void loadPictures(String availability){
         DetailsLoader detailsLoader;
+        Cursor cursor;
         //Run query on database
         try {
-            if (ClimaUtilities.temperature != "NOT SET") {
+            if (!ClimaUtilities.temperature.equals("NOT SET")) {
                 cursor = climaClosetDB.ClimaQueryTop(Double.parseDouble(ClimaUtilities.temperature), availability);
             }
             else

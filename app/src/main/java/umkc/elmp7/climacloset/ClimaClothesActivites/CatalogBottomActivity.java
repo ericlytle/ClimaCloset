@@ -1,5 +1,6 @@
 package umkc.elmp7.climacloset.ClimaClothesActivites;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -17,12 +18,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import umkc.elmp7.climacloset.ClimaClothes.ClimaClosetBottom;
 import umkc.elmp7.climacloset.ClimaDB.ClimaClosetDB;
 import umkc.elmp7.climacloset.ClimaUtil.ClimaUtilities;
 import umkc.elmp7.climacloset.Exceptions.AddItemException;
+import umkc.elmp7.climacloset.Listeners.BackButtonClickListener;
 import umkc.elmp7.climacloset.Listeners.TakePhotoButtonClickListener;
 import umkc.elmp7.climacloset.R;
 
@@ -34,13 +37,14 @@ public class CatalogBottomActivity extends AppCompatActivity {
     private ImageView ivPhotoPreview;
     private Bitmap photoDisplay;
     private ClimaClosetDB climaClosetDB;
+    private Activity myActivity;
 
-    private static ArrayAdapter<String> spinnerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog_bottom);
-
+        myActivity = this;
         //Set up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -48,12 +52,7 @@ public class CatalogBottomActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.climatoolbarsmall);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.backbutton);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(new BackButtonClickListener(this));
 
         //Keep keyboard from auto appearing on activity launch
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -90,6 +89,10 @@ public class CatalogBottomActivity extends AppCompatActivity {
                 } catch (AddItemException e) {
                     Log.d("AddItemException", e.getMessage());
                 }
+                catch (Exception e){
+                    ClimaUtilities.AlertMessage(myActivity, "Something went wrong!\n" +
+                            "Check to make sure all fields are populated!");
+                }
             }
         });
 
@@ -114,7 +117,7 @@ public class CatalogBottomActivity extends AppCompatActivity {
 
     void buildSpinner(){
         String[] colorArray = getResources().getStringArray(R.array.color_array);
-        spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, colorArray )
+        SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, colorArray )
         {
             @Override
             public View getView(int position, View convertView,ViewGroup parent) {
@@ -122,7 +125,7 @@ public class CatalogBottomActivity extends AppCompatActivity {
                 View v = super.getView(position, convertView, parent);
 
                 ((TextView) v).setGravity(Gravity.CENTER);
-                ((TextView) v).setTextColor(Color.BLACK);
+                ((TextView) v).setTextColor(Color.WHITE);
 
                 return v;
 

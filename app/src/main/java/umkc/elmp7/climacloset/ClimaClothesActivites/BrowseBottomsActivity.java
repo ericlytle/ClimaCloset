@@ -78,8 +78,8 @@ public class BrowseBottomsActivity extends AppCompatActivity implements Observer
         loadPictures(filterSpinner.getSelectedItem().toString());
 
         //Create Listeners
-        MarkItemDirtyButtonClickListener itemDirtyButtonListener = new MarkItemDirtyButtonClickListener(getApplicationContext());
-        DeleteItemButtonClickListener deleteItemButtonClickListener = new DeleteItemButtonClickListener(getApplicationContext(), climaClosetDB.BOTTOMS_TABLE, findViewById(android.R.id.content), btnMarkDirty, btnDeleteBottom);
+        MarkItemDirtyButtonClickListener itemDirtyButtonListener = new MarkItemDirtyButtonClickListener(getApplicationContext(), ClimaClosetDB.BOTTOMS_TABLE);
+        DeleteItemButtonClickListener deleteItemButtonClickListener = new DeleteItemButtonClickListener(getApplicationContext(), ClimaClosetDB.BOTTOMS_TABLE, findViewById(android.R.id.content), btnMarkDirty, btnDeleteBottom);
         FilterSpinnerItemSelectedListener filterSpinnerItemSelectedListener = new FilterSpinnerItemSelectedListener();
 
         //Initialize observers
@@ -99,7 +99,7 @@ public class BrowseBottomsActivity extends AppCompatActivity implements Observer
         DetailsLoader detailsLoader;
 
         try {
-            if (ClimaUtilities.temperature != "NOT SET") {
+            if (!ClimaUtilities.temperature.equals("NOT SET")) {
                 cursor = climaClosetDB.ClimaQueryBottom(Double.parseDouble(ClimaUtilities.temperature), availability);
             }
             else{

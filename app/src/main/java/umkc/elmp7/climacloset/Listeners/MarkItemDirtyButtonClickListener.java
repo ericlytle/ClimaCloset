@@ -24,22 +24,20 @@ public class MarkItemDirtyButtonClickListener extends Observable implements View
         }
         @Override
         public void onClick(View v) {
-
-            try{
-                if (itemType.equals(ClimaClosetDB.SHIRTS_TABLE)) {
-                    ClimaClosetTop topTag = (ClimaClosetTop) v.getTag();
-                    DB.markTopItemDirty(topTag);
+            if (v.getTag() != null) {
+                try {
+                    if (itemType.equals(ClimaClosetDB.SHIRTS_TABLE)) {
+                        ClimaClosetTop topTag = (ClimaClosetTop) v.getTag();
+                        DB.markTopItemDirty(topTag);
+                    } else {
+                        ClimaClosetBottom bottomTag = (ClimaClosetBottom) v.getTag();
+                        DB.markBottomItemDirty(bottomTag);
+                    }
+                    setChanged();
+                    notifyObservers("Item updated!");
+                } catch (UpdateException e) {
+                    Log.d("UpdateException", e.getMessage());
                 }
-                else{
-                    ClimaClosetBottom bottomTag = (ClimaClosetBottom) v.getTag();
-                    DB.markBottomItemDirty(bottomTag);
-                }
-                setChanged();
-                notifyObservers("Item updated!");
-            }
-            catch (UpdateException e)
-            {
-                Log.d("UpdateException", e.getMessage());
             }
         }
     }

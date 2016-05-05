@@ -69,7 +69,7 @@ public class BrowseBottomsActivity extends AppCompatActivity implements Observer
         //Ititialize spinner
         filterSpinner = (Spinner) findViewById(R.id.filterClothingSpinner);
         ClimaUtilities.buildSpinner(filterSpinner, getApplicationContext());
-        filterSpinner.setSelection(0);
+        //test filterSpinner.setSelection(0);
 
         //Initialize Database
         climaClosetDB = ClimaClosetDB.instance(getApplicationContext());

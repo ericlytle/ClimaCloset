@@ -90,11 +90,7 @@ public class DetailsLoader {
             deleteButton.setVisibility(View.INVISIBLE);
             dirtyButton.setVisibility(View.INVISIBLE);
             smsButton.setVisibility(View.INVISIBLE);
-        }
-        else {
-            deleteButton.setVisibility(View.VISIBLE);
-            dirtyButton.setVisibility(View.VISIBLE);
-            smsButton.setVisibility(View.VISIBLE);
+            ClimaUtilities.AlertMessage(activity, "There are no clothes to display!");
         }
     }
     private class topViewOnClickListener implements View.OnClickListener{

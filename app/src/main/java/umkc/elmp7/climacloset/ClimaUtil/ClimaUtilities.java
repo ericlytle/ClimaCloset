@@ -85,7 +85,7 @@ public class ClimaUtilities {
                 View v = super.getView(position, convertView, parent);
 
                 ((TextView) v).setGravity(Gravity.CENTER);
-                ((TextView) v).setTextColor(Color.BLACK);
+                ((TextView) v).setTextColor(Color.WHITE);
 
                 return v;
 

@@ -33,22 +33,22 @@ public class DeleteItemButtonClickListener extends Observable implements View.On
     }
     @Override
     public void onClick(View view) {
-        ClothingItem itemTag = (ClothingItem) view.getTag();
-        try {
-            climaClosetDB.deleteItem(itemTag, itemTable);
+        if (view.getTag() != null) {
+            ClothingItem itemTag = (ClothingItem) view.getTag();
+                try {
+                    climaClosetDB.deleteItem(itemTag, itemTable);
 
-            Snackbar.make(snackBarView, "Item deleted successfully", Snackbar.LENGTH_LONG)
-                    .show();
-            if (ClimaUtilities.ASSERTIONS_ENABLED) {
-                assert markItemDirtyButton.getVisibility() == View.INVISIBLE : "DeleteTopButtonListener -- Mark item dirty button invisible";
-                assert deleteItemButton.getVisibility() == View.INVISIBLE : "DeleteTopButtonListener -- delete item button invisible";
+                    Snackbar.make(snackBarView, "Item deleted successfully", Snackbar.LENGTH_LONG)
+                            .show();
+                    if (ClimaUtilities.ASSERTIONS_ENABLED) {
+                        assert markItemDirtyButton.getVisibility() == View.INVISIBLE : "DeleteTopButtonListener -- Mark item dirty button invisible";
+                        assert deleteItemButton.getVisibility() == View.INVISIBLE : "DeleteTopButtonListener -- delete item button invisible";
+                    }
+                    setChanged();
+                    notifyObservers("Item Deleted!");
+                } catch (DeleteItemException e) {
+                    Log.d("DeleteItemException", e.getMessage());
+                }
             }
-            setChanged();
-            notifyObservers("Item Deleted!");
-        }
-        catch (DeleteItemException e)
-        {
-            Log.d("DeleteItemException", e.getMessage());
-        }
     }
 }
